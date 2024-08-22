@@ -1,13 +1,13 @@
 <template>
-  <chat/>
+  <headers/>
 </template>
 
 <script>
-import Chat from './components/HJH/Chat.vue';
+import headers from './components/HJH/headers.vue';
 
 export default {
   components: {
-    Chat,
+    headers
   },
   data () {
     return {}
@@ -15,6 +15,6 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 
 </style>
