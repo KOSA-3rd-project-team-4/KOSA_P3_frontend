@@ -1,0 +1,245 @@
+<template>
+  <div class="signup-container">
+    <h2>회원가입</h2>
+    <form @submit.prevent="register">
+      <div>
+        <label for="name">이름</label>
+        <input type="text" v-model="name" required />
+      </div>
+      <div>
+        <label for="username">아이디</label>
+        <input type="text" v-model="username" required />
+      </div>
+      <div>
+        <label for="password">비밀번호</label>
+        <input type="password" v-model="password" required />
+      </div>
+      <div>
+        <label for="confirmPassword">비밀번호 확인</label>
+        <input type="password" v-model="confirmPassword" required />
+      </div>
+      <div>
+        <label for="email">이메일</label>
+        <input type="email" v-model="email" required />
+      </div>
+      <div>
+        <label for="businessNumber">사업자등록번호</label>
+        <div class="business-number-container">
+          <input type="text" v-model="businessNumber" required />
+          <button type="button" class="lookup-button" @click="lookupBusinessNumber">조회</button>
+        </div>
+      </div>
+      <button type="submit">회원가입</button>
+    </form>
+
+    <div v-if="isModalOpen" class="modal">
+      <div class="modal-content">
+        <span class="close" @click="closeModal">&times;</span>
+        <h2>사업체 정보 입력</h2>
+        <div>
+          <label for="businessName">사업체 이름</label>
+          <input type="text" v-model="businessName" required />
+        </div>
+        <div>
+          <label for="businessAddress">사업체 주소</label>
+          <div class="business-address-container">
+            <input type="text" v-model="zonecode" placeholder="우편번호" disabled />
+            <button type="button" class="lookup-button" @click="searchAddress">주소 검색</button>
+          </div>
+          <input type="text" v-model="roadAddress" placeholder="도로명 주소" disabled />
+          <input type="text" v-model="roadAddressDetail" placeholder="상세주소를 입력해주세요." />
+        </div>
+        <div>
+          <label for="businessPhone">사업체 전화번호</label>
+          <input type="text" v-model="businessPhone" required />
+        </div>
+        <button @click="saveBusinessInfo">저장</button>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import axios from 'axios';
+
+export default {
+  data() {
+    return {
+      name: '',
+      username: '',
+      password: '',
+      confirmPassword: '',
+      email: '',
+      businessNumber: '',
+      businessName: '',
+      zonecode: '',
+      roadAddress: '',
+      roadAddressDetail: '',
+      businessPhone: '',
+      isModalOpen: false,
+    };
+  },
+  methods: {
+    register() {
+      if (this.password !== this.confirmPassword) {
+        alert('비밀번호가 일치하지 않습니다.');
+        return;
+      }
+
+      this.$store.dispatch('register', {
+        name: this.name,
+        username: this.username,
+        password: this.password,
+        email: this.email,
+        businessNumber: this.businessNumber,
+        businessName: this.businessName,
+        businessAddress: `${this.roadAddress} ${this.roadAddressDetail}`,
+        businessPhone: this.businessPhone,
+      }).then(() => {
+        alert('회원가입이 완료되었습니다.');
+        this.$router.push('/login');
+      }).catch(err => {
+        alert('회원가입에 실패했습니다: ' + err.message);
+      });
+    },
+    lookupBusinessNumber() {
+      this.businessNumber = this.businessNumber.replace(/[^0-9]/g, "");
+
+      if (!this.businessNumber) {
+        alert("사업자등록번호를 입력해주세요.");
+        return;
+      }
+
+      const data = {
+        "b_no": [this.businessNumber]
+      };
+
+      axios.post("https://api.odcloud.kr/api/nts-businessman/v1/status?serviceKey=elKSdPM1k7zdhLRa7NyhquaPbmyeiTkOleT6e5by6XuWxnqILwltax%2BtXgl%2B%2BTNzAtgz5WCtXbUx7WbOZ1fUfg%3D%3D", data, {
+        headers: {
+          "Content-Type": "application/json; charset=UTF-8",
+          "Accept": "application/json"
+        }
+      })
+      .then(response => {
+        const result = response.data;
+        console.log(result);
+        if (result.match_cnt === 1) {
+          alert(result.data[0]["tax_type"]);
+          this.isModalOpen = true;
+        } else {
+          alert("조회된 사업자 정보가 없습니다.");
+        }
+      })
+      .catch(error => {
+        console.log("error");
+        console.log(error.response.data);
+      });
+    },
+    searchAddress() {
+      new window.daum.Postcode({
+        oncomplete: (data) => {
+          this.zonecode = data.zonecode;
+          this.roadAddress = data.roadAddress;
+        },
+      }).open();
+    },
+    saveBusinessInfo() {
+      // 사업체 정보 저장 로직
+      this.isModalOpen = false;
+    },
+    closeModal() {
+      this.isModalOpen = false;
+    }
+  }
+};
+</script>
+
+<style scoped>
+.signup-container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+input {
+  display: block;
+  width: 100%;
+  max-width: 400px;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.business-number-container {
+  display: flex;
+  align-items: center;
+}
+
+.business-number-container input {
+  margin-right: 10px;
+  max-width: calc(100% - 90px);
+}
+
+.lookup-button {
+  width: 80px;
+  padding: 10px;
+  background-color: #ffcd00;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button {
+  width: 100%;
+  max-width: 400px;
+  padding: 10px;
+  background-color: #ffcd00;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* 모달 스타일 */
+.modal {
+  display: flex;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 500px;
+  width: 100%;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+</style>
