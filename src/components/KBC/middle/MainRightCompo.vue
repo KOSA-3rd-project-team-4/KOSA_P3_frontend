@@ -12,19 +12,45 @@
                 </li>
             </ul>
             <div class="main-right-sign">
-                <a href="">회원가입</a>
+                <router-link to="/signup">회원가입</router-link>
                 <hr>
-                <a href="">아이디 찾기</a>
+                <a href="#" @click.prevent="showFindIdPopup = true">아이디 찾기</a>
                 <hr>
-                <a href="">비밀번호 찾기</a>
+                <a href="#" @click.prevent="showFindPasswordPopup= true">비밀번호 찾기</a>
             </div>
         </div>
     </div>
+        <!-- 아이디 찾기 모달 -->
+    <find-id-popup
+        :isOpen="showFindIdPopup" 
+        :activeTab="activeTab" 
+        @close="showFindIdPopup = false" 
+    />
+
+    <!-- 비밀번호 찾기 모달 -->
+    <find-password-popup 
+        :isOpen="showFindPasswordPopup" 
+        :activeTab="activeTab" 
+        @close="showFindPasswordPopup = false" 
+    />
 </template>
 
 <script>
-export default {
+import FindIdPopup from '../../PJH/FindIdPopup.vue';
+import FindPasswordPopup from '../../PJH/FindPasswordPopup.vue';
 
+export default {
+    data() {
+    return {
+      showFindIdPopup: false,
+      showFindPasswordPopup: false,
+      activeTab: 'business', 
+    };
+  },
+    components: {
+    FindIdPopup,
+    FindPasswordPopup
+  },
 }
 </script>
 

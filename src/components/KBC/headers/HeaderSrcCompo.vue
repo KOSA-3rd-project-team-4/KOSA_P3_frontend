@@ -7,9 +7,9 @@
     </div>
     <div class="account">
         <div class="sign">
-            <a href="">로그인</a>
+            <router-link to="/login">로그인</router-link>
             <hr>
-            <a href="">회원가입</a>
+            <router-link to="/signup">회원가입</router-link>
         </div>
         <div class="wrap-service">
             <button class="btn-service" type="button" >기업서비스
