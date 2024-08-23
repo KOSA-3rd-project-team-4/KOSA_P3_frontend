@@ -45,6 +45,7 @@
       justify-items: end;
       align-items: center;
       grid-auto-flow: column dense;
+      font-family: 'GodoM', sans-serif;
   }
 
   .account .sign{

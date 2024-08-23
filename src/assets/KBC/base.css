@@ -1,3 +1,18 @@
+@font-face {
+    font-family: 'SDMiSaeng';
+    src: url('/src/assets/SDMiSaeng.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+
+}
+@font-face {
+    font-family: 'GodoM';
+    src: url('/src/assets/GodoM.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
 body{
     margin: 0;
 }
