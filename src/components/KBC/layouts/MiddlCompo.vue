@@ -1,11 +1,15 @@
 <template>
   <div id="middle-container">
-    <div class="main-top">
-      <main-left-compo></main-left-compo>
-      <main-right-compo></main-right-compo>
+    <div class="main-top-container">
+      <div class="main-top">
+        <main-left-compo></main-left-compo>
+        <main-right-compo></main-right-compo>
+      </div>
     </div>
-    <div class="main-contents">
-      <middle-sv-compo></middle-sv-compo>
+    <div class="main-contents-container">
+      <div class="main-contents">
+        <middle-sv-compo></middle-sv-compo>
+      </div>
     </div>
   </div>
 </template>
@@ -30,7 +34,20 @@ export default {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+
  }
+.main-top-container{
+  display: flex;
+  width:100%;
+  background-color: #fff;
+  justify-content: center;
+}
 
-
+.main-contents-container{
+  margin-top:20px;
+  display: flex;
+  width:100%;
+  background-color: #f7f8fa;
+  justify-content: center;
+}
 </style>

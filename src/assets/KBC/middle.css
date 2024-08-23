@@ -1,5 +1,4 @@
 .middle{
-    background-color: #f7f8fa;
     width: 1264px;
     margin-top: 20px;
     padding: 20px;
@@ -48,6 +47,7 @@
     display: flex;
     flex-wrap: wrap;
     margin-top: 10px;
+
 }
 
 ul,ol{
@@ -58,9 +58,9 @@ ul,ol{
   overflow: unset;
   float: left;
   position: relative;
-  width: calc(25% - 15px);
+  width: calc(22% - 15px);
   height: 240px;
-  margin: 20px 20px 0 0;
+  margin: 20px 0 0 40px;
   border-radius: 12px;
   background-color: #fff;
 }
@@ -69,11 +69,14 @@ ul,ol{
     border: 1px solid #ffe000;
 }
 
+.contents-card:hover{
+    transform: scale(1.1);
+}
+
 .contents-card-info{
     border-radius: 12px;
     display: block;
     height: 100%;
-  
     background-color: #fff;
     
 }
@@ -119,10 +122,17 @@ a{
 
 .contents-card-info .wrap .local{
     padding-left: 18px;
-    background:#666c76;
     line-height: 16px;
     color: #595e69;
     font-size: .875rem;  
+}
+
+.contents-card-info .wrap .local img{
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    display: inline-block;
+    margin-right: 10px;
 }
 
 .contents-card-info .wrap .pay{
