@@ -21,6 +21,6 @@ export default {
     display: flex;
     position: relative;
     top: 0;
-    border-bottom: 1px solid grey;
+    border-bottom: 1px solid #d5d9df;
 }
 </style>

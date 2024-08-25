@@ -208,7 +208,7 @@ li {
     position: relative;
     display: block;
     width: 100%;
-
+    color: inherit;
     font-weight: 700;
     font-size: 0.9375rem;
     text-align: center;
@@ -226,7 +226,7 @@ a {
     position: relative;
     display: block;
     width: 100%;
-
+    color: inherit;
     font-weight: 700;
     font-size: 0.9375rem;
     text-align: center;
