@@ -1,32 +1,32 @@
 <template>
-  <headers/>
-  <!-- <jobPost/> -->
-  <partTimeJobPosts/>
-  <!-- <applicantBoard2/> -->
-  <!-- <chat/> -->
+  <header-compo></header-compo>
+  <middl-compo></middl-compo>
+  <footer-compo></footer-compo>
 </template>
 
 <script>
-import ApplicantBoard2 from './components/HJH/applicant-board2.vue';
-import headers from './components/HJH/headers.vue';
-import JobPost from './components/HJH/job-post.vue';
-import PartTimeJobPosts from './components/HJH/Part-time-job-posts.vue';
-import Chat from './components/HJH/Chat.vue';
+import FooterCompo from './components/KBC/layouts/FooterCompo.vue';
+import HeaderCompo from './components/KBC/layouts/HeaderCompo.vue';
+import MiddlCompo from './components/KBC/layouts/MiddlCompo.vue';
+
+
+
 
 export default {
+  name: 'App',
   components: {
-    headers,
-    JobPost,
-    PartTimeJobPosts,
-    ApplicantBoard2,
-    Chat,
+    HeaderCompo,MiddlCompo,FooterCompo
   },
-  data () {
-    return {}
-  }
 }
 </script>
 
-<style scoped>
-
+<style>
+@import url(assets/base.css);
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+}
 </style>
