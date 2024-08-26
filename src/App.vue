@@ -12,7 +12,7 @@ export default {
 </script>
 
 <style>
-@import url(assets/base.css);
+@import url('/src/assets/KBC/base.css');
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

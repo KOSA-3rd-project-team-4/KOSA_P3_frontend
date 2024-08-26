@@ -1,0 +1,73 @@
+[
+    {
+      "logo": "/src/assets/vue.svg",
+      "company": "Vue Corp",
+      "title": "Frontend Developer",
+      "location": "Seoul, Korea",
+      "salary": "10,000원"
+    },
+    {
+      "logo": "/src/assets/company2.svg",
+      "company": "React Ltd",
+      "title": "Backend Developer",
+      "location": "Busan, Korea",
+      "salary": "12,000원"
+    },
+    {
+      "logo": "/src/assets/company3.svg",
+      "company": "Angular Inc",
+      "title": "Full Stack Developer",
+      "location": "Incheon, Korea",
+      "salary": "11,000원"
+    },
+    {
+      "logo": "/src/assets/company4.svg",
+      "company": "Svelte Solutions",
+      "title": "UI/UX Designer",
+      "location": "Daegu, Korea",
+      "salary": "9,000원"
+    },
+    {
+      "logo": "/src/assets/company5.svg",
+      "company": "Node Corp",
+      "title": "DevOps Engineer",
+      "location": "Daejeon, Korea",
+      "salary": "13,000원"
+    },
+    {
+      "logo": "/src/assets/company6.svg",
+      "company": "Python Systems",
+      "title": "Data Scientist",
+      "location": "Gwangju, Korea",
+      "salary": "14,000원"
+    },
+    {
+      "logo": "/src/assets/company7.svg",
+      "company": "Django Ltd",
+      "title": "Backend Developer",
+      "location": "Ulsan, Korea",
+      "salary": "12,500원"
+    },
+    {
+      "logo": "/src/assets/company8.svg",
+      "company": "Ruby Corp",
+      "title": "Full Stack Developer",
+      "location": "Suwon, Korea",
+      "salary": "11,500원"
+    },
+    {
+      "logo": "/src/assets/company9.svg",
+      "company": "JavaScript Inc",
+      "title": "Frontend Developer",
+      "location": "Jeju, Korea",
+      "salary": "10,500원"
+    },
+    {
+      "logo": "/src/assets/company10.svg",
+      "company": "Java Ltd",
+      "title": "Mobile App Developer",
+      "location": "Chuncheon, Korea",
+      "salary": "11,000원"
+    }
+  ]
+  
