@@ -1,8 +1,8 @@
 <template>
   <headers/>
   <!-- <jobPost/> -->
-  <!-- <partTimeJobPosts/> -->
-  <applicantBoard2/>
+  <partTimeJobPosts/>
+  <!-- <applicantBoard2/> -->
   <!-- <chat/> -->
 </template>
 
