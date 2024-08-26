@@ -6,6 +6,8 @@ import CardView from '../components/KBC/middle/CardView.vue';
 import MapView from '../components/KBC/middle/MapView.vue';
 import JobList from '../components/KBC/middle/JobList.vue';
 import ResumeList from '../components/KBC/resume/ResumeList.vue';
+import NotFound from '../components/PJH/404ErrorPage.vue'
+import ServerError from '../components/PJH/500ErrorPage.vue'
 
 const routes = [
     {
@@ -45,6 +47,17 @@ const routes = [
         name: 'ResumeList',
         component: ResumeList,
     },
+    {
+        path: '/:pathMatch(.*)*',
+        name: 'NotFound',
+        component: NotFound,
+      },
+    {
+        path: '/500',
+        name: 'ServerError',
+        component: ServerError,
+
+    }
 ];
 
 const router = createRouter({
