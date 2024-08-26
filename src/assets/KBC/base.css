@@ -1,0 +1,38 @@
+@font-face {
+    font-family: 'SDMiSaeng';
+    src: url('/src/assets/SDMiSaeng.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+
+}
+@font-face {
+    font-family: 'GodoM';
+    src: url('/src/assets/GodoM.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+body{
+    margin: 0;
+}
+.header {
+    width: 100%;
+    height: 100px;   
+    display: flex;
+    justify-content: center;
+   
+}
+
+.main-contents {
+    width: 1264px;
+    height: 80%;
+    min-height: 800px;
+    display: flex;
+}
+
+.footer {
+    width: 100%;
+    height: 100px;
+
+}
