@@ -7,55 +7,35 @@
                 </div>
                 <div id="board-options">
                     <div id="board-options-content">
-                        
                         <div id="board-filter-component">
                             <button @click="toggleDropdown" id="board-filter-button">
-                                {{ selectOption ? selectedOption : '전체 보기'}} 
+                                {{ selectOption ? selectedOption : '전체 보기' }}
                             </button>
-    
+
                             <ul v-if="showDropdown" class="dropdown">
-                                <li 
-                                    v-for="(option, index) in options"
-                                    :key="index"
-                                    @click="selectOption(option)">
-                                {{ option }}
+                                <li v-for="(option, index) in options" :key="index" @click="selectOption(option)">
+                                    {{ option }}
                                 </li>
                             </ul>
-
                         </div>
                     </div>
                 </div>
-
             </div>
 
             <!-- TODO 지원자 정보를 받으면 여기에 내려주기-->
             <div id="board-contents">
                 <div id="board-contents-content">
-                    
                     <div class="applicant-box">
-                        <div class="applicant-left">
-                        지원자 이미지
-                        </div>
-                        <div class="applicant-center">
-                        지원자 간략 정보
-                        </div>
-                        <div class="applicant-right">
-                        지원자 채팅하기
-                        </div>
+                        <div class="applicant-left">지원자 이미지</div>
+                        <div class="applicant-center">지원자 간략 정보</div>
+                        <div class="applicant-right">지원자 채팅하기</div>
                     </div>
 
                     <div class="applicant-box">
-                        <div class="applicant-left">
-                        지원자 이미지
-                        </div>
-                        <div class="applicant-center">
-                        지원자 간략 정보
-                        </div>
-                        <div class="applicant-right">
-                        지원자 채팅하기
-                        </div>
+                        <div class="applicant-left">지원자 이미지</div>
+                        <div class="applicant-center">지원자 간략 정보</div>
+                        <div class="applicant-right">지원자 채팅하기</div>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -64,17 +44,17 @@
 
 <script>
 export default {
-    data () {
+    data() {
         return {
             showDropdown: false, // 드롭다운 표시 여부
             selectedOption: '전체 보기', // 선택된 옵션
-            options: ['전체 보기', '공고 1', '공고 2', '공고 3'] // 드롭다운 옵션 목록
-        }
+            options: ['전체 보기', '공고 1', '공고 2', '공고 3'], // 드롭다운 옵션 목록
+        };
     },
     computed: {
         applicant_id() {
-           return this.$route.params.applicant_id;
-        }
+            return this.$route.params.applicant_id;
+        },
     },
     methods: {
         toggleDropdown() {
@@ -85,14 +65,15 @@ export default {
             // 옵션을 선택하면 selectedOption에 저장하고 드롭다운 숨김
             this.selectedOption = option;
             this.showDropdown = false;
-        }
-    }
+        },
+    },
 };
 </script>
 
 <style scoped>
-
-body { margin: 0; }
+body {
+    margin: 0;
+}
 
 h1 {
     font-size: 36px;
@@ -161,7 +142,7 @@ h1 {
     border: 1px solid;
     display: flex;
     flex-direction: row;
-    justify-content: space-between
+    justify-content: space-between;
 }
 
 #board-title {
@@ -206,37 +187,59 @@ h1 {
     box-sizing: border-box;
 }
 
-
-
 .applicant-box {
     width: 100%;
     min-width: 580px;
     height: 135px;
     padding: 20px 40px;
-    background-color: lightgrey;
+    background-color: #fff; /* 배경색 변경 */
     box-sizing: border-box;
     display: flex;
     flex-direction: row;
-  }
-  
-  .applicant-left {
+    border-radius: 8px; /* 모서리 둥글게 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
+    margin-bottom: 20px; /* 카드 간격 추가 */
+}
+
+.applicant-left {
     width: 20%;
     min-width: 100px;
-    background-color: aliceblue;
-    padding-left: 0px;
-  }
-  
-  .applicant-center {
+    background-color: #f8f9fa; /* 배경색 변경 */
+    padding-left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px; /* 모서리 둥글게 */
+}
+
+.applicant-center {
     width: 60%;
     min-width: 300px;
-    background-color:darkcyan;
-  }
-  
-  .applicant-right {
+    background-color: #f1f1f1; /* 배경색 변경 */
+    padding: 10px;
+    border-radius: 8px; /* 모서리 둥글게 */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: #333; /* 텍스트 색상 조정 */
+}
+
+.applicant-right {
     width: 20%;
     min-width: 100px;
-    background-color:hotpink;
-  }
+    background-color: #e7e7e7; /* 배경색 변경 */
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px; /* 모서리 둥글게 */
+    color: #007bff; /* 텍스트 색상 조정 */
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
 
-
+.applicant-right:hover {
+    background-color: #cfe2ff; /* 호버 시 배경색 변경 */
+}
 </style>
