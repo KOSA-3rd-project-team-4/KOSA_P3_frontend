@@ -39,7 +39,7 @@
           
           <div id="posts-contents">
               
-              <div v-for="post in init_listData" :key="post" class="post-content" @click="handleClick">
+            <div v-for="post in init_listData" :key="post.announcement_id" class="post-content" @click="handleClick(post.announcement_id)">
                   <div class="post-content-title">
                       <div class="post-content-title-thumbnail">
                           {{post.company_thumbnail}}
@@ -100,8 +100,9 @@ export default {
         this.selectedOption = option;
         this.showDropdown = false;
     },
-    handleClick() {
-        alert('hello!');
+    handleClick(announcement_id) {
+        // alert(`Selected Announcement ID: ${announcement_id}`);
+        this.$router.push({ name: 'PartTimeJobPost', params: { announcement_id: announcement_id } });
     }
   },
   data () {
@@ -216,14 +217,15 @@ export default {
       }
   },
   mounted() {
-    // // 컴포넌트가 마운트될 때 데이터베이스에서 데이터 가져오기
-    // axios.get('http://localhost:8080/posts/all')
-    //   .then(response => {
-    //     this.init_listData = response.data; // 서버로부터 받은 데이터를 저장
-    //   })
-    //   .catch(error => {
-    //     console.error("There was an error fetching the data:", error);
-    //   })
+  //   // 컴포넌트가 마운트될 때 데이터베이스에서 데이터 가져오기
+  //   axios.get('http://localhost:8080/query/bizannouncement/select/all')
+  //     .then(response => {
+  //       this.init_listData = response.data; // 서버로부터 받은 데이터를 저장
+  //       console.log(this.init_listData);
+  //     })
+  //     .catch(error => {
+  //       console.error("There was an error fetching the data:", error);
+  //     })
   },
 }
 </script>
