@@ -10,7 +10,11 @@
             <input type="text" />
         </div>
         <div class="account">
-            <div class="sign">
+            <div v-if="isAuthenticated" class="user-info">
+                <span>Welcome, {{ user.username }}!</span>
+                <button @click="logout">Logout</button>
+            </div>
+            <div v-else class="sign">
                 <router-link to="/login">로그인</router-link>
                 <hr />
                 <router-link to="/signup">회원가입</router-link>
@@ -20,7 +24,19 @@
 </template>
 
 <script>
-export default {};
+import { mapGetters, mapActions } from 'vuex';
+
+export default {
+    computed: {
+        ...mapGetters(['isAuthenticated', 'getUser']),
+        user() {
+            return this.getUser;
+        },
+    },
+    methods: {
+        ...mapActions(['logout']),
+    },
+};
 </script>
 
 <style scoped>
