@@ -1,9 +1,10 @@
 <template>
     <div id="header" class="header">
-        <div class="logo">
+        <router-link to="/" class="logo">
             <img src="/src/assets/KBC/present-logo-nonbg.png" />
             <img src="/src/assets/KBC/title.png" />
-        </div>
+        </router-link>
+
         <div class="search">
             <div class="sr-icon"><img src="/src/assets/KBC/search.png" /></div>
             <input type="text" />

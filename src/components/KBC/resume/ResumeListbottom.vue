@@ -1,7 +1,7 @@
 <template>
     <div class="resume-bottom-container">
         <div class="resume-card-container">
-            <div class="resume-card">
+            <router-link to="/resume-detail" class="resume-card">
                 <div class="thumbnail">
                     <!--display flex-->
                     <span class="profile-img"><img src="/src/assets/KBC/person.png" /></span>
@@ -22,7 +22,7 @@
                     <button type="button">제안하기</button>
                 </div>
                 <!--display grid-->
-            </div>
+            </router-link>
         </div>
     </div>
 </template>

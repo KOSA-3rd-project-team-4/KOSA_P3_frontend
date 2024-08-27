@@ -6,6 +6,7 @@ import CardView from '../components/KBC/middle/CardView.vue';
 import MapView from '../components/KBC/middle/MapView.vue';
 import JobList from '../components/KBC/middle/JobList.vue';
 import ResumeList from '../components/KBC/resume/ResumeList.vue';
+import ResumeDetail from '../components/KBC/resume/ResumeDetail.vue';
 
 const routes = [
     {
@@ -44,6 +45,11 @@ const routes = [
         path: '/resume',
         name: 'ResumeList',
         component: ResumeList,
+    },
+    {
+        path: '/resume-detail',
+        name: 'ResumeDetail',
+        component: ResumeDetail,
     },
 ];
 
