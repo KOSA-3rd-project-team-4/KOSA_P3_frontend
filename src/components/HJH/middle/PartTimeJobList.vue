@@ -108,123 +108,123 @@ export default {
       return {
           init_listData: [
             
-              // {
-              //     'company_name': '삼성',
-              //     'company_thumbnail': 'image_path_samsung',
-              //     'is_favorate': true,
-              //     'post_name': '일일 알바 구합니다.',
-              //     'company_location': '경기도 어쩌구',
-              //     'salary_type': '일급',
-              //     'salary_price': 100000,
-              // },
-              // {
-              //     'company_name': 'LG',
-              //     'company_thumbnail': 'image_path_lg',
-              //     'is_favorate': true,
-              //     'post_name': '일일 알바 많이 구합니다.',
-              //     'company_location': '경기도 어쩌구',
-              //     'salary_type': '시급',
-              //     'salary_price': 120000,
-              // },
-              // {
-              //     'company_name': 'LG',
-              //     'company_thumbnail': 'image_path_lg',
-              //     'is_favorate': true,
-              //     'post_name': '일일 알바 많이 구합니다.',
-              //     'company_location': '경기도 어쩌구',
-              //     'salary_type': '시급',
-              //     'salary_price': 120000,
-              // },
-              // {
-              //     'company_name': 'LG',
-              //     'company_thumbnail': 'image_path_lg',
-              //     'is_favorate': true,
-              //     'post_name': '일일 알바 많이 구합니다.',
-              //     'company_location': '경기도 어쩌구',
-              //     'salary_type': '시급',
-              //     'salary_price': 120000,
-              // },
-              // {
-              //     'company_name': 'LG',
-              //     'company_thumbnail': 'image_path_lg',
-              //     'is_favorate': true,
-              //     'post_name': '일일 알바 많이 구합니다.',
-              //     'company_location': '경기도 어쩌구',
-              //     'salary_type': '시급',
-              //     'salary_price': 120000,
-              // },
-              // {
-              //     'company_name': 'LG',
-              //     'company_thumbnail': 'image_path_lg',
-              //     'is_favorate': true,
-              //     'post_name': '일일 알바 많이 구합니다.',
-              //     'company_location': '경기도 어쩌구',
-              //     'salary_type': '시급',
-              //     'salary_price': 120000,
-              // },
-              // {
-              //     'company_name': 'LG',
-              //     'company_thumbnail': 'image_path_lg',
-              //     'is_favorate': true,
-              //     'post_name': '일일 알바 많이 구합니다.',
-              //     'company_location': '경기도 어쩌구',
-              //     'salary_type': '시급',
-              //     'salary_price': 120000,
-              // },
-              // {
-              //     'company_name': 'LG',
-              //     'company_thumbnail': 'image_path_lg',
-              //     'is_favorate': true,
-              //     'post_name': '일일 알바 많이 구합니다.',
-              //     'company_location': '경기도 어쩌구',
-              //     'salary_type': '시급',
-              //     'salary_price': 120000,
-              // },
-              // {
-              //     'company_name': 'LG',
-              //     'company_thumbnail': 'image_path_lg',
-              //     'is_favorate': true,
-              //     'post_name': '일일 알바 많이 구합니다.',
-              //     'company_location': '경기도 어쩌구',
-              //     'salary_type': '시급',
-              //     'salary_price': 120000,
-              // },
-              // {
-              //     'company_name': 'LG',
-              //     'company_thumbnail': 'image_path_lg',
-              //     'is_favorate': true,
-              //     'post_name': '일일 알바 많이 구합니다.',
-              //     'company_location': '경기도 어쩌구',
-              //     'salary_type': '시급',
-              //     'salary_price': 120000,
-              // },
-              // {
-              //     'company_name': 'LG',
-              //     'company_thumbnail': 'image_path_lg',
-              //     'is_favorate': true,
-              //     'post_name': '일일 알바 많이 구합니다.',
-              //     'company_location': '경기도 어쩌구',
-              //     'salary_type': '시급',
-              //     'salary_price': 120000,
-              // },
-              // {
-              //     'company_name': 'LG',
-              //     'company_thumbnail': 'image_path_lg',
-              //     'is_favorate': true,
-              //     'post_name': '일일 알바 많이 구합니다.',
-              //     'company_location': '경기도 어쩌구',
-              //     'salary_type': '시급',
-              //     'salary_price': 120000,
-              // },
-              // {
-              //     'company_name': 'LG',
-              //     'company_thumbnail': 'image_path_lg',
-              //     'is_favorate': true,
-              //     'post_name': '일일 알바 많이 구합니다.',
-              //     'company_location': '경기도 어쩌구',
-              //     'salary_type': '시급',
-              //     'salary_price': 120000,
-              // },
+              {
+                  'company_name': '삼성',
+                  'company_thumbnail': 'image_path_samsung',
+                  'is_favorate': true,
+                  'post_name': '일일 알바 구합니다.',
+                  'company_location': '경기도 어쩌구',
+                  'salary_type': '일급',
+                  'salary_price': 100000,
+              },
+              {
+                  'company_name': 'LG',
+                  'company_thumbnail': 'image_path_lg',
+                  'is_favorate': true,
+                  'post_name': '일일 알바 많이 구합니다.',
+                  'company_location': '경기도 어쩌구',
+                  'salary_type': '시급',
+                  'salary_price': 120000,
+              },
+              {
+                  'company_name': 'LG',
+                  'company_thumbnail': 'image_path_lg',
+                  'is_favorate': true,
+                  'post_name': '일일 알바 많이 구합니다.',
+                  'company_location': '경기도 어쩌구',
+                  'salary_type': '시급',
+                  'salary_price': 120000,
+              },
+              {
+                  'company_name': 'LG',
+                  'company_thumbnail': 'image_path_lg',
+                  'is_favorate': true,
+                  'post_name': '일일 알바 많이 구합니다.',
+                  'company_location': '경기도 어쩌구',
+                  'salary_type': '시급',
+                  'salary_price': 120000,
+              },
+              {
+                  'company_name': 'LG',
+                  'company_thumbnail': 'image_path_lg',
+                  'is_favorate': true,
+                  'post_name': '일일 알바 많이 구합니다.',
+                  'company_location': '경기도 어쩌구',
+                  'salary_type': '시급',
+                  'salary_price': 120000,
+              },
+              {
+                  'company_name': 'LG',
+                  'company_thumbnail': 'image_path_lg',
+                  'is_favorate': true,
+                  'post_name': '일일 알바 많이 구합니다.',
+                  'company_location': '경기도 어쩌구',
+                  'salary_type': '시급',
+                  'salary_price': 120000,
+              },
+              {
+                  'company_name': 'LG',
+                  'company_thumbnail': 'image_path_lg',
+                  'is_favorate': true,
+                  'post_name': '일일 알바 많이 구합니다.',
+                  'company_location': '경기도 어쩌구',
+                  'salary_type': '시급',
+                  'salary_price': 120000,
+              },
+              {
+                  'company_name': 'LG',
+                  'company_thumbnail': 'image_path_lg',
+                  'is_favorate': true,
+                  'post_name': '일일 알바 많이 구합니다.',
+                  'company_location': '경기도 어쩌구',
+                  'salary_type': '시급',
+                  'salary_price': 120000,
+              },
+              {
+                  'company_name': 'LG',
+                  'company_thumbnail': 'image_path_lg',
+                  'is_favorate': true,
+                  'post_name': '일일 알바 많이 구합니다.',
+                  'company_location': '경기도 어쩌구',
+                  'salary_type': '시급',
+                  'salary_price': 120000,
+              },
+              {
+                  'company_name': 'LG',
+                  'company_thumbnail': 'image_path_lg',
+                  'is_favorate': true,
+                  'post_name': '일일 알바 많이 구합니다.',
+                  'company_location': '경기도 어쩌구',
+                  'salary_type': '시급',
+                  'salary_price': 120000,
+              },
+              {
+                  'company_name': 'LG',
+                  'company_thumbnail': 'image_path_lg',
+                  'is_favorate': true,
+                  'post_name': '일일 알바 많이 구합니다.',
+                  'company_location': '경기도 어쩌구',
+                  'salary_type': '시급',
+                  'salary_price': 120000,
+              },
+              {
+                  'company_name': 'LG',
+                  'company_thumbnail': 'image_path_lg',
+                  'is_favorate': true,
+                  'post_name': '일일 알바 많이 구합니다.',
+                  'company_location': '경기도 어쩌구',
+                  'salary_type': '시급',
+                  'salary_price': 120000,
+              },
+              {
+                  'company_name': 'LG',
+                  'company_thumbnail': 'image_path_lg',
+                  'is_favorate': true,
+                  'post_name': '일일 알바 많이 구합니다.',
+                  'company_location': '경기도 어쩌구',
+                  'salary_type': '시급',
+                  'salary_price': 120000,
+              },
 
           ],
           showDropdown: false,
@@ -233,14 +233,14 @@ export default {
       }
   },
   mounted() {
-    // 컴포넌트가 마운트될 때 데이터베이스에서 데이터 가져오기
-    axios.get('http://localhost:8080/posts/all')
-      .then(response => {
-        this.init_listData = response.data; // 서버로부터 받은 데이터를 저장
-      })
-      .catch(error => {
-        console.error("There was an error fetching the data:", error);
-      })
+    // // 컴포넌트가 마운트될 때 데이터베이스에서 데이터 가져오기
+    // axios.get('http://localhost:8080/posts/all')
+    //   .then(response => {
+    //     this.init_listData = response.data; // 서버로부터 받은 데이터를 저장
+    //   })
+    //   .catch(error => {
+    //     console.error("There was an error fetching the data:", error);
+    //   })
   },
 }
 </script>
