@@ -12,11 +12,9 @@ import PartTimeJobPost from '../components/HJH/middle/PartTimeJobPost.vue';
 import ApplicantsList from '../components/HJH/middle/ApplicantsList.vue';
 import ChatApply from '../components/HJH/middle/ChatApply.vue';
 
-
-import NotFound from '../components/PJH/404ErrorPage.vue'
-import ServerError from '../components/PJH/500ErrorPage.vue'
+import NotFound from '../components/PJH/404ErrorPage.vue';
+import ServerError from '../components/PJH/500ErrorPage.vue';
 import ResumeDetail from '../components/KBC/resume/ResumeDetail.vue';
-
 
 const routes = [
     {
@@ -71,6 +69,9 @@ const routes = [
         name: 'ChatApply',
         component: ChatApply,
     },
+    // {
+    //     path: '/chat/channel/:'
+    // },
     {
         path: '/:pathMatch(.*)*',
         name: 'NotFound',
@@ -80,7 +81,6 @@ const routes = [
         path: '/500',
         name: 'ServerError',
         component: ServerError,
-
     },
     {
         path: '/resume-detail',
