@@ -10,9 +10,20 @@ export default {
 };
 </script>
 
+<template>
+    <header-compo />
+    <middl-compo />
+    <footer-compo />
+</template>
+
 <style>
 @import url('/src/assets/KBC/base.css');
 #app {
+    font-family: Avenir, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    color: #2c3e50;
     font-family: Avenir, Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;

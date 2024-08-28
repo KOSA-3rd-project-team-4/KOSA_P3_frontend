@@ -27,5 +27,6 @@ export default {
 </script>
 
 <style scoped>
+@import url('/src/assets/middle.css');
 @import url('/src/assets/KBC/middle.css');
 </style>
