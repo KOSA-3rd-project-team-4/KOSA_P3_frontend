@@ -1,34 +1,58 @@
 <template>
     <div class="resume-bottom-container">
         <div class="resume-card-container">
-            <router-link to="/resume-detail" class="resume-card">
+            <router-link v-for="resume in resumes" :key="resume.id" to="/resume-detail" class="resume-card">
                 <div class="thumbnail">
-                    <!--display flex-->
-                    <span class="profile-img"><img src="/src/assets/KBC/person.png" /></span>
+                    <span class="profile-img">
+                        <img src="/src/assets/KBC/person.png" alt="Profile Image" />
+                    </span>
                 </div>
                 <div class="summary-info">
                     <div class="name-container">
-                        <span class="name">김범철</span>
-                        <span class="age">30대</span>
+                        <span class="name">{{ resume.member.nick_name }}</span>
+                        <!-- <span class="age">{{ resume.member.age }}대</span> -->
                     </div>
                     <div class="pr-contents">
-                        <span class="contents">원하는 일에 딱 맞는 우수한 인재를 찾아보세요</span>
+                        <span class="contents">{{ resume.title }}</span>
                     </div>
                     <div class="tag-list">
-                        <div class="tags">중장년</div>
+                        <div class="tags">{{ resume.tag }}</div>
                     </div>
                 </div>
                 <div class="submit-resume">
                     <button type="button">제안하기</button>
                 </div>
-                <!--display grid-->
             </router-link>
         </div>
     </div>
 </template>
 
 <script>
-export default {};
+import axios from 'axios';
+
+export default {
+    data() {
+        return {
+            resumes: [], // 데이터를 담을 배열
+        };
+    },
+    created() {
+        // 컴포넌트가 생성될 때 데이터 가져오기
+        this.fetchResumes();
+    },
+    methods: {
+        async fetchResumes() {
+            try {
+                const response = await axios.get('http://localhost:8080/api/resume-list');
+                this.resumes = response.data;
+
+                console.log(this.resumes); // 서버에서 받은 데이터를 배열에 저장
+            } catch (error) {
+                console.error('Error fetching resumes:', error);
+            }
+        },
+    },
+};
 </script>
 
 <style>
