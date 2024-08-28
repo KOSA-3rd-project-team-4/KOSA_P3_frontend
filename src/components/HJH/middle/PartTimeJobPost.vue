@@ -6,7 +6,7 @@
           <div class="flex">
             <div>
               <h1>{{ title }}</h1>
-              <p>{{ bizmember_id }}</p>
+              <p>{{ bizname }}</p>
             </div>
             <img :src="companyLogoUrl" alt="Company Logo" class="company-logo">
           </div>
@@ -78,7 +78,7 @@
     data() {
       return {
         title: '소프트웨어 엔지니어',
-        bizmember_id: 'TechCorp Inc.',
+        bizname: 'TechCorp Inc.',
         companyLogoUrl: 'https://via.placeholder.com/100x100',
         salary: '80,000,000원 - 100,000,000원',
         day_of_work: '오전 9:00 - 오후 5:00',
@@ -111,21 +111,37 @@
     //   this.is_biz_member = this.user.is_biz_member;
   
       // 실제 데이터 로드
-      axios.get('http://localhost:8080/query/bizannouncement/select/' + this.$route.params.announcement_id)
+      axios.get('http://localhost:8080/query/view/announcements/select/' + this.$route.params.announcement_id)
         .then(response => {
           // 서버에서 받아온 데이터로 data 속성 업데이트
           const data = response.data;
           console.log(data);
           this.title = data.title;
-          this.bizmember_id = data.bizmember_id + ' 회사명'; // bizmember_id로 회사 들어가서 회사명 받아야함
-          // this.companyLogoUrl = data.companyLogoUrl; // 회사 로고 bizmember_id로 들어가서 회사 썸네일 받아오기
-          this.salary = '$ ' + data.salary; 
+          this.bizname = data.bizname; // 회사명
+          this.companyLogoUrl = data.image_url; // 회사 로고
+          this.salary = data.salary; 
+
+          // day_of_work의 시간 추출
+          const dayOfWork = new Date(data.day_of_work);
+          const dayOfWorkHours = dayOfWork.getUTCHours(); // UTC 기준의 시간 추출
+          const dayOfWorkMinutes = dayOfWork.getUTCMinutes();
+
+          // start_work_time의 시간 추출
+          const startWorkTime = new Date(data.start_work_time);
+          const startWorkHours = startWorkTime.getUTCHours();
+          const startWorkMinutes = startWorkTime.getUTCMinutes();
+          const startWorkHoursText = startWorkTime.getUTCHours() / 12 == 1 ? '오전' : '오후';
+
+          // end_work_time의 시간 추출
+          const endWorkTime = new Date(data.end_work_time);
+          const endWorkHours = endWorkTime.getUTCHours();
+          const endWorkMinutes = endWorkTime.getUTCMinutes();
+          const endWorkHoursText = endWorkTime.getUTCHours() / 12 == 1 ? '오전' : '오후';
 
           // TODO DATA
           // 시간 표시 포맷 바꾸기
-          // 작성 방법: data.start_work_time ~ data.start_work_time + data.day_of_work
-          // this.day_of_work = data.day_of_work; // 시간 표시 포맷 바꾸기
-
+          this.day_of_work = `${startWorkHoursText} ${startWorkHours%12}시 ~ ${endWorkHoursText} ${endWorkHours%12}시`;
+          
           // this.applicationPeriod = data.applicationPeriod; // 이거 없네
           // this.numberOfPositions = data.numberOfPositions; // 이것도 없네
           this.location_description = data.location_description;
