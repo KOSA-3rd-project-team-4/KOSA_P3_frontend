@@ -8,6 +8,7 @@ import JobList from '../components/KBC/middle/JobList.vue';
 import ResumeList from '../components/KBC/resume/ResumeList.vue';
 import NotFound from '../components/PJH/404ErrorPage.vue'
 import ServerError from '../components/PJH/500ErrorPage.vue'
+import ResumeDetail from '../components/KBC/resume/ResumeDetail.vue';
 
 const routes = [
     {
@@ -57,7 +58,12 @@ const routes = [
         name: 'ServerError',
         component: ServerError,
 
-    }
+    },
+    {
+        path: '/resume-detail',
+        name: 'ResumeDetail',
+        component: ResumeDetail,
+    },
 ];
 
 const router = createRouter({
