@@ -40,22 +40,21 @@
                 >
                     <div class="post-content-title">
                         <div class="post-content-title-thumbnail">
-                            {{ post.company_thumbnail }}rcon
+                            <!-- {{ post.image_url }} -->
+                            <img :src="post.image_url" alt="지원자 이미지" class="applicant-thumbnail">
                         </div>
                         <div v-if="post.favorate" class="favorate">T</div>
                         <div v-else class="favorate">F</div>
-                    </div>
-                    <div class="post-content-company">
-                        <div class="content-title">
-                            {{ post.company_name }} compname
-                        </div>
                     </div>
                     <div class="post-content-post-name">
                         <div class="content-post-title">
                             {{ post.title }}
                         </div>
                     </div>
-                    <div class="post-content-location">
+                    <div class="post-content-company">
+                        <div class="content-title">
+                            {{ post.company_name }}
+                        </div>
                         <div class="content-location-text">
                             {{ post.location_description }}
                         </div>
@@ -102,7 +101,7 @@ export default {
                 {
                     announcement_id: 1,
                     company_name: '삼성', // id 값 들어오는데 이거 회사명으로 갖고와야함
-                    company_thumbnail: 'image_path_samsung',
+                    image_url: 'image_path_samsung',
                     is_favorate: true, // 이거 아직 추가 안했다..
                     title: '일일 알바 구합니다.',
                     location_description: '경기도 어쩌구',
@@ -122,7 +121,7 @@ export default {
                 this.init_listData = response.data.map(item => ({
                     announcement_id: 1,
                     company_name: item.bizname || '삼성',
-                    company_thumbnail: item.image_url || 'image_path_samsung',
+                    image_url: item.image_url || 'image_path_samsung',
                     is_favorate: true, // 이거 아직 추가 안했다..
                     title: item.title || '일일 알바 구합니다.',
                     location_description: item.location_description || '경기도 어쩌구',
@@ -290,9 +289,16 @@ body {
     align-items: center; /* 내용 가운데 정렬 */
     height: 62px;
     margin-bottom: 10px; /* 여백 추가 */
+    padding: 0 20px;
 }
 
 .post-content-title-thumbnail {
+    width: 60px;
+    height: 60px;
+    object-fit: cover; /* 이미지 크기 조정 */
+    border-radius: 8px; /* 이미지 모서리 둥글게 */
+}
+.post-content-title-thumbnail img{
     width: 60px;
     height: 60px;
     object-fit: cover; /* 이미지 크기 조정 */
@@ -310,40 +316,63 @@ body {
 /*------------------------------------------------------------*/
 
 .post-content-company {
-    font-size: 18px;
-    font-weight: bold;
-    margin-bottom: 5px;
+    display: flex;
+    padding: 0 20px;
+    font-size: 16px;
+    /* font-weight: bold; */
+    margin-bottom: 20px;
     color: #333; /* 강한 텍스트 색상 */
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.content-post-title {
+    font-size: 18px;
+    color: #555; /* 약간의 텍스트 색상 */
+}
+
+.content-location-text {
+    font-size: 16px;
+    color: #555;
 }
 
 /*------------------------------------------------------------*/
 
 .post-content-post-name {
-    font-size: 16px;
+    display: flex;
+    width: 100%;
+    padding: 0 20px;
     margin-bottom: 10px;
-    color: #555; /* 약간의 텍스트 색상 */
 }
+
+
+
+
 
 /*------------------------------------------------------------*/
 
-.post-content-location,
 .post-content-payment {
-    font-size: 14px;
     color: #777; /* 약한 텍스트 색상 */
+    margin-top: 50px;
 }
 
 /*------------------------------------------------------------*/
 
 .content-payment-box {
+    position: relative;
     display: flex;
     justify-content: space-between;
+    padding: 0 20px;
 }
 
 .salary-type {
     color: green;
+    font-size: 20px;
+    font-weight: bold;
 }
 
 .payment {
+    font-size: 20px;
     font-weight: bold;
 }
 </style>
