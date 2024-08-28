@@ -25,16 +25,17 @@
             <!-- TODO 지원자 정보를 받으면 여기에 내려주기-->
             <div id="board-contents">
                 <div id="board-contents-content">
-                    <div class="applicant-box">
-                        <div class="applicant-left">지원자 이미지</div>
-                        <div class="applicant-center">지원자 간략 정보</div>
-                        <div class="applicant-right">지원자 채팅하기</div>
-                    </div>
-
-                    <div class="applicant-box">
-                        <div class="applicant-left">지원자 이미지</div>
-                        <div class="applicant-center">지원자 간략 정보</div>
-                        <div class="applicant-right">지원자 채팅하기</div>
+                    <div v-for="item in applicants" :key="item.apply_id" class="applicant-box">
+                        <div class="applicant-left">
+                            <img :src="item.member_thumbnail" alt="지원자 이미지" class="applicant-thumbnail">
+                        </div>
+                        <div class="applicant-center">
+                            {{item.member_apply_title}}
+                        </div>
+                        <div class="applicant-right">
+                            <button class="chat-button">채팅</button>
+                            <button class="reject-button">거절</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -43,9 +44,25 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
     data() {
         return {
+            applicants: [
+                {
+                    member_thumbnail: '*.jpg',
+                    member_apply_title: 'apply title 1',
+                    
+
+                    apply_id: 1,
+                    member_id: 1,
+                    announcement_id: 1,
+                    apply_date: 'date',
+                    chat_created: 1, // true | false
+                    user_hired: 1 // true | false
+                }
+            ],
             showDropdown: false, // 드롭다운 표시 여부
             selectedOption: '전체 보기', // 선택된 옵션
             options: ['전체 보기', '공고 1', '공고 2', '공고 3'], // 드롭다운 옵션 목록
@@ -54,7 +71,7 @@ export default {
     computed: {
         applicant_id() {
             return this.$route.params.applicant_id;
-        },
+        }
     },
     methods: {
         toggleDropdown() {
@@ -67,10 +84,70 @@ export default {
             this.showDropdown = false;
         },
     },
+    mounted() {
+        // 실제 데이터 로드
+        // applies에서 특정 공고의 id에 해당하는 것만 where로 가져와야 함
+        
+        // 서버에서 데이터를 가져와 applicants 배열에 할당
+        axios.get('http://localhost:8080/query/applies/select/all')
+            .then(response => {
+                // 서버에서 받아온 데이터로 applicants 배열 업데이트
+                this.applicants = response.data.map(item => ({
+                    member_thumbnail: item.member_thumbnail || 'default.jpg', // 썸네일 이미지 경로 (기본값 포함)
+                    member_apply_title: item.member_apply_title || '지원자 타이틀', // 지원자 타이틀
+
+                    apply_id: item.apply_id,
+                    member_id: item.member_id,
+                    announcement_id: item.announcement_id,
+                    apply_date: item.apply_date,
+                    chat_created: item.chat_created,
+                    user_hired: item.user_hired
+                }));
+                console.log(this.applicants);
+            })
+            .catch(error => {
+                console.error("There was an error fetching the applicants data:", error);
+            });
+    },
 };
 </script>
 
 <style scoped>
+/* 추가된 스타일 */
+.applicant-thumbnail {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.chat-button,
+.reject-button {
+    padding: 8px 16px;
+    margin: 0 5px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.chat-button {
+    background-color: #007bff;
+    color: white;
+}
+
+.reject-button {
+    background-color: #dc3545;
+    color: white;
+}
+
+.chat-button:hover {
+    background-color: #0056b3;
+}
+
+.reject-button:hover {
+    background-color: #c82333;
+}
+
 body {
     margin: 0;
 }
@@ -139,7 +216,7 @@ h1 {
 #board-top {
     width: 100%;
     height: 80px;
-    border: 1px solid;
+    /* border: 1px solid; */
     display: flex;
     flex-direction: row;
     justify-content: space-between;

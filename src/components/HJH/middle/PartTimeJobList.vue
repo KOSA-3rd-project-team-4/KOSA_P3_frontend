@@ -40,30 +40,30 @@
                 >
                     <div class="post-content-title">
                         <div class="post-content-title-thumbnail">
-                            {{ post.company_thumbnail }}
+                            {{ post.recruit_condition }}rcon
                         </div>
                         <div v-if="post.favorate" class="favorate">T</div>
                         <div v-else class="favorate">F</div>
                     </div>
                     <div class="post-content-company">
                         <div class="content-title">
-                            {{ post.company_name }}
+                            {{ post.bizmember_id }} compname
                         </div>
                     </div>
                     <div class="post-content-post-name">
                         <div class="content-post-title">
-                            {{ post.post_name }}
+                            {{ post.title }}
                         </div>
                     </div>
                     <div class="post-content-location">
                         <div class="content-location-text">
-                            {{ post.company_location }}
+                            {{ post.location_description }}
                         </div>
                     </div>
                     <div class="post-content-payment">
                         <div class="content-payment-box">
                             <div class="salary-type">{{ post.salary_type }}</div>
-                            <div class="payment">{{ post.salary_price }}원</div>
+                            <div class="payment">{{ post.salary }} 달러</div>
                         </div>
                     </div>
                 </div>
@@ -101,103 +101,13 @@ export default {
             init_listData: [
                 {
                     announcement_id: 1,
-                    company_name: '삼성',
-                    company_thumbnail: 'image_path_samsung',
-                    is_favorate: true,
-                    post_name: '일일 알바 구합니다.',
-                    company_location: '경기도 어쩌구',
-                    salary_type: '일급',
-                    salary_price: 100000,
-                },
-                {
-                    announcement_id: 2,
-                    company_name: 'LG',
-                    company_thumbnail: 'image_path_lg',
-                    is_favorate: true,
-                    post_name: '일일 알바 많이 구합니다.',
-                    company_location: '경기도 어쩌구',
-                    salary_type: '시급',
-                    salary_price: 120000,
-                },
-                {
-                    announcement_id: 3,
-                    company_name: 'LG',
-                    company_thumbnail: 'image_path_lg',
-                    is_favorate: true,
-                    post_name: '일일 알바 많이 구합니다.',
-                    company_location: '경기도 어쩌구',
-                    salary_type: '시급',
-                    salary_price: 120000,
-                },
-                {
-                    announcement_id: 4,
-                    company_name: 'LG',
-                    company_thumbnail: 'image_path_lg',
-                    is_favorate: true,
-                    post_name: '일일 알바 많이 구합니다.',
-                    company_location: '경기도 어쩌구',
-                    salary_type: '시급',
-                    salary_price: 120000,
-                },
-                {
-                    announcement_id: 5,
-                    company_name: 'LG',
-                    company_thumbnail: 'image_path_lg',
-                    is_favorate: true,
-                    post_name: '일일 알바 많이 구합니다.',
-                    company_location: '경기도 어쩌구',
-                    salary_type: '시급',
-                    salary_price: 120000,
-                },
-                {
-                    announcement_id: 6,
-                    company_name: 'LG',
-                    company_thumbnail: 'image_path_lg',
-                    is_favorate: true,
-                    post_name: '일일 알바 많이 구합니다.',
-                    company_location: '경기도 어쩌구',
-                    salary_type: '시급',
-                    salary_price: 120000,
-                },
-                {
-                    announcement_id: 7,
-                    company_name: 'LG',
-                    company_thumbnail: 'image_path_lg',
-                    is_favorate: true,
-                    post_name: '일일 알바 많이 구합니다.',
-                    company_location: '경기도 어쩌구',
-                    salary_type: '시급',
-                    salary_price: 120000,
-                },
-                {
-                    announcement_id: 8,
-                    company_name: 'LG',
-                    company_thumbnail: 'image_path_lg',
-                    is_favorate: true,
-                    post_name: '일일 알바 많이 구합니다.',
-                    company_location: '경기도 어쩌구',
-                    salary_type: '시급',
-                    salary_price: 120000,
-                },
-                {
-                    announcement_id: 9,
-                    company_name: 'LG',
-                    company_thumbnail: 'image_path_lg',
-                    is_favorate: true,
-                    post_name: '일일 알바 많이 구합니다.',
-                    company_location: '경기도 어쩌구',
-                    salary_type: '시급',
-                    salary_price: 120000,
-                },
-                {
-                    announcement_id: 10,
-                    company_name: 'LG',
-                    company_thumbnail: 'image_path_lg',
-                    is_favorate: true,
-                    post_name: '일일 알바 많이 구합니다.',
-                    company_location: '경기도 어쩌구',
-                    salary_type: '시급',
-                    salary_price: 120000,
+                    bizmember_id: '삼성', // id 값 들어오는데 이거 회사명으로 갖고와야함
+                    recruit_condition: 'image_path_samsung', // 이거 bizmember_id로 사업자쪽 간다음에 이미지 경로 가져와야함
+                    is_favorate: true, // 이거 아직 추가 안했다..
+                    title: '일일 알바 구합니다.',
+                    location_description: '경기도 어쩌구',
+                    salary_type: '일급', // 이거 아직 추가 안했는디..?
+                    salary: 100000,
                 },
             ],
             showDropdown: false,
@@ -206,15 +116,15 @@ export default {
         };
     },
     mounted() {
-        //   // 컴포넌트가 마운트될 때 데이터베이스에서 데이터 가져오기
-        //   axios.get('http://localhost:8080/query/bizannouncement/select/all')
-        //     .then(response => {
-        //       this.init_listData = response.data; // 서버로부터 받은 데이터를 저장
-        //       console.log(this.init_listData);
-        //     })
-        //     .catch(error => {
-        //       console.error("There was an error fetching the data:", error);
-        //     })
+          // 컴포넌트가 마운트될 때 데이터베이스에서 데이터 가져오기
+          axios.get('http://localhost:8080/query/bizannouncement/select/all')
+            .then(response => {
+              this.init_listData = response.data; // 서버로부터 받은 데이터를 저장
+              console.log(this.init_listData);
+            })
+            .catch(error => {
+              console.error("There was an error fetching the data:", error);
+            })
     },
 };
 </script>

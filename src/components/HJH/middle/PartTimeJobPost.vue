@@ -5,19 +5,19 @@
         <div id="post-overview">
           <div class="flex">
             <div>
-              <h1>{{ jobTitle }}</h1>
-              <p>{{ companyName }}</p>
+              <h1>{{ title }}</h1>
+              <p>{{ bizmember_id }}</p>
             </div>
             <img :src="companyLogoUrl" alt="Company Logo" class="company-logo">
           </div>
           <div class="grid">
             <div>
               <p><strong>연봉:</strong></p>
-              <p>{{ salaryRange }}</p>
+              <p>{{ salary }}</p>
             </div>
             <div>
               <p><strong>근무 시간:</strong></p>
-              <p>{{ workHours }}</p>
+              <p>{{ day_of_work }}</p>
             </div>
           </div>
         </div>
@@ -41,10 +41,10 @@
         <div id="post-work-area-info">
           <h2>근무지 정보</h2>
           <div>
-            <p><strong>근무지 명:</strong></p>
-            <p>{{ workLocationName }}</p>
+            <!-- <p><strong>근무지 명:</strong></p>
+            <p>{{ workLocationName }}</p> -->
             <p><strong>주소:</strong></p>
-            <p>{{ workLocationAddress }}</p>
+            <p>{{ location_description }}</p>
             <div class="map-placeholder">
               <p>[지도 위치]</p>
             </div>
@@ -55,7 +55,7 @@
         <div id="post-details">
           <h2>세부 사항</h2>
           <p>
-            {{ jobDetails }}
+            {{ contents }}
           </p>
         </div>
   
@@ -77,16 +77,16 @@
   export default {
     data() {
       return {
-        jobTitle: '소프트웨어 엔지니어',
-        companyName: 'TechCorp Inc.',
+        title: '소프트웨어 엔지니어',
+        bizmember_id: 'TechCorp Inc.',
         companyLogoUrl: 'https://via.placeholder.com/100x100',
-        salaryRange: '80,000,000원 - 100,000,000원',
-        workHours: '오전 9:00 - 오후 5:00',
+        salary: '80,000,000원 - 100,000,000원',
+        day_of_work: '오전 9:00 - 오후 5:00',
         applicationPeriod: '2024년 8월 1일 - 2024년 9월 1일',
         numberOfPositions: '3명',
         workLocationName: 'TechCorp 본사',
-        workLocationAddress: '서울특별시 강남구 테크로 123',
-        jobDetails: `
+        location_description: '서울특별시 강남구 테크로 123',
+        contents: `
           우리는 다양한 프로젝트에서 일할 숙련된 소프트웨어 엔지니어를 찾고 있습니다. 
           새로운 기능을 개발하고, 재능 있는 팀원들과 협업하게 될 것입니다. 최신 
           프로그래밍 언어에 대한 지식이 있어야 하며, 클라우드 인프라 경험과 
@@ -110,25 +110,30 @@
     //   // 사용자의 상태를 기반으로 is_biz_member 설정
     //   this.is_biz_member = this.user.is_biz_member;
   
-    //   // 실제 데이터 로드
-    //   axios.get('http://localhost:8080/job/post/' + this.$route.params.announcement_id)
-    //     .then(response => {
-    //       // 서버에서 받아온 데이터로 data 속성 업데이트
-    //       const data = response.data;
-    //       this.jobTitle = data.jobTitle;
-    //       this.companyName = data.companyName;
-    //       this.companyLogoUrl = data.companyLogoUrl;
-    //       this.salaryRange = data.salaryRange;
-    //       this.workHours = data.workHours;
-    //       this.applicationPeriod = data.applicationPeriod;
-    //       this.numberOfPositions = data.numberOfPositions;
-    //       this.workLocationName = data.workLocationName;
-    //       this.workLocationAddress = data.workLocationAddress;
-    //       this.jobDetails = data.jobDetails;
-    //     })
-    //     .catch(error => {
-    //       console.error("There was an error fetching the job post data:", error);
-    //     });
+      // 실제 데이터 로드
+      axios.get('http://localhost:8080/query/bizannouncement/select/' + this.$route.params.announcement_id)
+        .then(response => {
+          // 서버에서 받아온 데이터로 data 속성 업데이트
+          const data = response.data;
+          console.log(data);
+          this.title = data.title;
+          this.bizmember_id = data.bizmember_id + ' 회사명'; // bizmember_id로 회사 들어가서 회사명 받아야함
+          // this.companyLogoUrl = data.companyLogoUrl; // 회사 로고 bizmember_id로 들어가서 회사 썸네일 받아오기
+          this.salary = '$ ' + data.salary; 
+
+          // TODO DATA
+          // 시간 표시 포맷 바꾸기
+          // 작성 방법: data.start_work_time ~ data.start_work_time + data.day_of_work
+          // this.day_of_work = data.day_of_work; // 시간 표시 포맷 바꾸기
+
+          // this.applicationPeriod = data.applicationPeriod; // 이거 없네
+          // this.numberOfPositions = data.numberOfPositions; // 이것도 없네
+          this.location_description = data.location_description;
+          this.contents = data.contents;
+        })
+        .catch(error => {
+          console.error("There was an error fetching the job post data:", error);
+        });
     }
   }
   </script>
