@@ -308,7 +308,7 @@ h1 {
     width: 100%;
     min-width: 580px;
     height: 135px;
-    padding: 20px 40px;
+    padding: 15px 30px;
     background-color: #fff; /* 배경색 변경 */
     box-sizing: border-box;
     display: flex;
@@ -319,7 +319,7 @@ h1 {
 }
 
 .applicant-left {
-    width: 20%;
+    width: 15%;
     min-width: 100px;
     background-color: #f8f9fa; /* 배경색 변경 */
     border-top: 1px solid rgb(16, 209, 209);
@@ -385,7 +385,8 @@ h1 {
 
 
 .applicant-right {
-    width: 20%;
+    width: 21%;
+    right: 0;
     min-width: 100px;
     /* background-color: #e7e7e7; */
     border-top: 1px solid rgb(16, 209, 209);
@@ -394,7 +395,7 @@ h1 {
     padding: 10px;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     /* border-radius: 8px; */
     border-top-right-radius: 8px;
     border-bottom-right-radius: 8px;
@@ -406,5 +407,15 @@ h1 {
 
 .applicant-right:hover {
     background-color: #cfe2ff; /* 호버 시 배경색 변경 */
+}
+
+.chat-button {
+    min-width: 100px;
+    box-sizing: border-box;
+}
+
+.reject-button {
+    min-width: 100px;
+    box-sizing: border-box;
 }
 </style>
