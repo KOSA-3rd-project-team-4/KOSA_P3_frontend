@@ -30,10 +30,14 @@
                 </div>
             </div>
         </div>
+        <div>
+            <button type="button" @click.prevent="checkLoginStatus">로그인 확인</button>
+        </div>
     </div>
 </template>
 
 <script>
+import axios from 'axios';
 import UserProfile from '../../PJH/UserProfile.vue';
 import FindIdPopup from '../../PJH/FindIdPopup.vue';
 import FindPasswordPopup from '../../PJH/FindPasswordPopup.vue';
@@ -52,10 +56,21 @@ export default {
         FindIdPopup,
         FindPasswordPopup,
     },
-    mounted() {
-        // 여기서는 로그인 상태를 체크하는 로직을 추가할 수 있습니다.
-        this.isLoggedIn = true; // 백엔드가 없다면 true로 설정하여 테스트 가능합니다.
-    },
+    methods: {
+  async checkLoginStatus() {
+    try {
+      const response = await axios.get('http://localhost:8080/current-user');
+      if (response.data.includes('Logged in as')) {
+        console.log(response.data);
+      } else {
+        console.log('User not logged in');
+      }
+    } catch (error) {
+      console.error('Error checking login status:', error);
+    }
+  }
+}
+
 };
 </script>
 

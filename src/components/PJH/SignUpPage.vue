@@ -81,27 +81,30 @@ export default {
   },
   methods: {
     register() {
-      if (this.password !== this.confirmPassword) {
-        alert('비밀번호가 일치하지 않습니다.');
-        return;
-      }
+    if (this.password !== this.confirmPassword) {
+      alert('비밀번호가 일치하지 않습니다.');
+      return;
+    }
 
-      this.$store.dispatch('register', {
-        name: this.name,
-        username: this.username,
-        password: this.password,
-        email: this.email,
-        businessNumber: this.businessNumber,
-        businessName: this.businessName,
-        businessAddress: `${this.roadAddress} ${this.roadAddressDetail}`,
-        businessPhone: this.businessPhone,
-      }).then(() => {
+    const memberData = {
+      username: this.username,
+      password: this.password,
+      email: this.email,
+      bizrno: this.businessNumber,
+      bizname: this.businessName,
+      address: `${this.roadAddress} ${this.roadAddressDetail}`,
+      call_number: this.businessPhone,
+    };
+    console.log(memberData);
+    axios.post('http://localhost:8080/api/register', memberData)
+      .then(() => {
         alert('회원가입이 완료되었습니다.');
         this.$router.push('/login');
-      }).catch(err => {
+      })
+      .catch(err => {
         alert('회원가입에 실패했습니다: ' + err.message);
       });
-    },
+  },
     lookupBusinessNumber() {
       this.businessNumber = this.businessNumber.replace(/[^0-9]/g, "");
 
