@@ -4,20 +4,22 @@
         <!-- Post Overview -->
         <div id="post-overview">
           <div class="flex">
-            <div>
+            <div class="content-block">
               <h1>{{ title }}</h1>
               <p>{{ bizname }}</p>
             </div>
             <img :src="companyLogoUrl" alt="Company Logo" class="company-logo">
           </div>
-          <div class="grid">
+          <div id="sub-title">
             <div>
-              <p><strong>연봉:</strong></p>
-              <p>{{ salary }}</p>
+              <p><span class="subject">급여:</span>{{ salary }}</p>
+              <!-- <p><strong>연봉:</strong></p>
+              <p>{{ salary }}</p> -->
             </div>
             <div>
-              <p><strong>근무 시간:</strong></p>
-              <p>{{ day_of_work }}</p>
+              <p><span class="subject">근무 시간:</span>{{ day_of_work }}</p>
+              <!-- <p><strong>근무 시간:</strong></p>
+              <p>{{ day_of_work }}</p> -->
             </div>
           </div>
         </div>
@@ -27,12 +29,14 @@
           <h2>채용 조건</h2>
           <div class="grid">
             <div>
-              <p><strong>모집 기간:</strong></p>
-              <p>{{ applicationPeriod }}</p>
+              <p><span class="subject">모집 기간:</span>{{ applicationPeriod }}</p>
+              <!-- <p><strong>모집 기간:</strong></p>
+              <p>{{ applicationPeriod }}</p> -->
             </div>
             <div>
-              <p><strong>모집 인원:</strong></p>
-              <p>{{ numberOfPositions }}</p>
+              <p><span class="subject">모집 인원:</span>{{ numberOfPositions }}</p>
+              <!-- <p><strong>모집 인원:</strong></p>
+              <p>{{ numberOfPositions }}</p> -->
             </div>
           </div>
         </div>
@@ -43,8 +47,9 @@
           <div>
             <!-- <p><strong>근무지 명:</strong></p>
             <p>{{ workLocationName }}</p> -->
-            <p><strong>주소:</strong></p>
-            <p>{{ location_description }}</p>
+            <p><span class="subject">주소:</span>{{ location_description }}</p>
+            <!-- <p><strong>주소:</strong></p>
+            <p>{{ location_description }}</p> -->
             <div class="map-placeholder">
               <p>[지도 위치]</p>
             </div>
@@ -171,6 +176,12 @@
   #post-apply {
     margin-bottom: 40px;
   }
+
+  .subject {
+    padding-right: 20px;
+    font-weight: bold;
+    font-weight: 800;
+  }
   
   h1 {
     font-size: 24px;
@@ -194,8 +205,24 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    /* border: 1px solid #ccc; */
   }
-  
+
+  #post-overview,
+  #post-apply-condition,
+  #post-work-area-info,
+  #post-details
+  {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+  }
+
+  #sub-title {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
   .grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -206,6 +233,10 @@
     width: 100px;
     height: 100px;
     object-fit: cover;
+  }
+
+  #post-apply-condition {
+    
   }
   
   .map-placeholder {
