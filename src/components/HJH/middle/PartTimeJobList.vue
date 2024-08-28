@@ -40,14 +40,14 @@
                 >
                     <div class="post-content-title">
                         <div class="post-content-title-thumbnail">
-                            {{ post.recruit_condition }}rcon
+                            {{ post.company_thumbnail }}rcon
                         </div>
                         <div v-if="post.favorate" class="favorate">T</div>
                         <div v-else class="favorate">F</div>
                     </div>
                     <div class="post-content-company">
                         <div class="content-title">
-                            {{ post.bizmember_id }} compname
+                            {{ post.company_name }} compname
                         </div>
                     </div>
                     <div class="post-content-post-name">
@@ -101,8 +101,8 @@ export default {
             init_listData: [
                 {
                     announcement_id: 1,
-                    bizmember_id: '삼성', // id 값 들어오는데 이거 회사명으로 갖고와야함
-                    recruit_condition: 'image_path_samsung', // 이거 bizmember_id로 사업자쪽 간다음에 이미지 경로 가져와야함
+                    company_name: '삼성', // id 값 들어오는데 이거 회사명으로 갖고와야함
+                    company_thumbnail: 'image_path_samsung',
                     is_favorate: true, // 이거 아직 추가 안했다..
                     title: '일일 알바 구합니다.',
                     location_description: '경기도 어쩌구',
@@ -117,10 +117,19 @@ export default {
     },
     mounted() {
           // 컴포넌트가 마운트될 때 데이터베이스에서 데이터 가져오기
-          axios.get('http://localhost:8080/query/bizannouncement/select/all')
+          axios.get('http://localhost:8080/query/view/announcements/select/all')
             .then(response => {
-              this.init_listData = response.data; // 서버로부터 받은 데이터를 저장
-              console.log(this.init_listData);
+                this.init_listData = response.data.map(item => ({
+                    announcement_id: 1,
+                    company_name: item.bizname || '삼성',
+                    company_thumbnail: item.image_url || 'image_path_samsung',
+                    is_favorate: true, // 이거 아직 추가 안했다..
+                    title: item.title || '일일 알바 구합니다.',
+                    location_description: item.location_description || '경기도 어쩌구',
+                    salary_type: '일급', // 이거 아직 추가 안했는디..?
+                    salary: item.salary || 100000,
+                }));
+                console.log(this.init_listData);
             })
             .catch(error => {
               console.error("There was an error fetching the data:", error);
