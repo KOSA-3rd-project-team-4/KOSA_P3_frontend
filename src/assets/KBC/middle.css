@@ -1,36 +1,36 @@
-.middle{
+.middle {
     width: 1264px;
     margin-top: 20px;
     padding: 20px;
 }
 
-.main-contents-head{
+.main-contents-head {
     position: relative;
     display: flex;
     -webkit-box-align: center;
     align-items: center;
-    margin-bottom: 20px;   
+    margin-bottom: 20px;
 }
 
-.head-title{
+.head-title {
     padding-left: 4px;
     font-size: 1.8125rem;
     font-weight: normal;
     font-family: 'SDMiSaeng', sans-serif;
 }
 
-.head-title-func{
+.head-title-func {
     display: flex;
     position: absolute;
-    top:50%;
+    top: 50%;
     right: 0;
     align-items: center;
     transform: translateY(-50%);
 }
 
-.head-title-func input[type="button"]{
+.head-title-func input[type='button'] {
     border: 1px solid #d5d9df;
-    color:#666c76 ;
+    color: #666c76;
     display: inline-block;
     vertical-align: top;
     width: 79px;
@@ -43,49 +43,48 @@
     line-height: 28px;
 }
 
-.contents{
+.contents {
     display: flex;
     flex-wrap: wrap;
     margin-top: 10px;
-
 }
 
-ul,ol{
+ul,
+ol {
     list-style: none;
 }
 
-.contents li{
-  overflow: unset;
-  float: left;
-  position: relative;
-  width: calc(22% - 15px);
-  height: 240px;
-  margin: 20px 0 0 40px;
-  border-radius: 12px;
-  background-color: #fff;
+.contents li {
+    overflow: unset;
+    float: left;
+    position: relative;
+    width: calc(22% - 15px);
+    height: 300px;
+    margin: 20px 0 0 40px;
+    border-radius: 12px;
+    background-color: #fff;
 }
 
-.contents-card{
+.contents-card {
     border: 1px solid #ffe000;
 }
 
-.contents-card:hover{
+.contents-card:hover {
     transform: scale(1.1);
 }
 
-.contents-card-info{
+.contents-card-info {
     border-radius: 12px;
     display: block;
     height: 100%;
     background-color: #fff;
-    
 }
 
-a{
+a {
     text-decoration: none;
 }
 
-.contents-card-info .logo{
+.contents-card-info .logo {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -97,37 +96,37 @@ a{
     text-align: center;
 }
 
-.contents-card-info .company{
-  overflow: hidden;
-  display: block;
-  margin-bottom: 6px;
-  font-size: .9375rem;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+.contents-card-info .company {
+    overflow: hidden;
+    display: block;
+    margin-bottom: 6px;
+    font-size: 0.9375rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
-.contents-card-info .title{
+.contents-card-info .title {
     overflow: hidden;
     display: block;
     height: 48px;
     margin-bottom: 10px;
     font-size: 1.0625rem;
     font-weight: 600;
-    line-height: 1.4;    
+    line-height: 1.4;
 }
 
-.contents-card-info .wrap{
-    display: block;   
+.contents-card-info .wrap {
+    display: block;
 }
 
-.contents-card-info .wrap .local{
+.contents-card-info .wrap .local {
     padding-left: 18px;
     line-height: 16px;
     color: #595e69;
-    font-size: .875rem;  
+    font-size: 0.875rem;
 }
 
-.contents-card-info .wrap .local img{
+.contents-card-info .wrap .local img {
     width: 20px;
     height: 20px;
     object-fit: contain;
@@ -135,34 +134,57 @@ a{
     margin-right: 10px;
 }
 
-.contents-card-info .wrap .pay{
+.contents-card-info .wrap .pay {
     display: flex;
     margin-top: 6px;
-    font-size: .875rem;
+    font-size: 0.875rem;
     font-weight: 700;
     color: #4c515b;
 }
 
-.contents-card-info .wrap .pay{
+.contents-card-info .wrap .pay {
     display: flex;
     margin-top: 6px;
-    font-size: .875rem;
+    font-size: 0.875rem;
     font-weight: 700;
     color: #4c515b;
     justify-content: center;
-    
 }
 
-.contents-card-info .wrap .pay .timepay{
+.contents-card-info .wrap .pay .timepay {
     color: #19891e;
     margin-right: 2px;
 }
 
-.contents-card-info .wrap .pay .money{
-   margin-left: 1px;
-
+.contents-card-info .wrap .pay .money {
+    margin-left: 1px;
 }
 
-img{
+img {
     object-fit: cover;
+}
+
+.tag-contents {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: left;
+    align-items: center;
+    margin-top: 10px;
+    margin-left: 30px;
+}
+
+.tag-contents li {
+    overflow: unset;
+    float: left;
+    position: relative;
+    width: calc(30% - 15px);
+    height: 20px;
+    border-radius: 4px;
+    background-color: #fff;
+    margin: 0 6px 2px 0;
+}
+
+.tag-card {
+    border: 1px solid #deddda;
+    width: 100%;
 }
