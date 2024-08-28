@@ -1,8 +1,8 @@
 <template>
-    <div id="test-board">
+    <!-- <div id="test-board">
         <input type="text" v-model="inputedUsername" placeholder="참여한 유저 이름을 작성" />
         <button @click="Init">참여한 유저 이름</button>
-    </div>
+    </div> -->
 
     <div id="app-content">
         <div id="app">
@@ -22,7 +22,9 @@
             </div>
             <div id="chat-sidebar">
                 <div id="chat-sidebar-content">
-                    <div class="chat-sidebar-icons">
+                    <!-- TODO 0829 채팅중에 내가 사업자면, 여기에 채용 버튼 만들기-->
+                    <!-- TODO 0829 채팅 언제든, 내가 구직자면, 채용 확정시 여기에 표시해주기-->
+                    <!-- <div class="chat-sidebar-icons">
                         <button>
                             <img src="/src/assets/HJH/phone.png" alt="" srcset="" />
                         </button>
@@ -31,7 +33,7 @@
                         <button>
                             <img src="/src/assets/HJH/money.png" alt="" srcset="" />
                         </button>
-                    </div>
+                    </div> -->
                 </div>
             </div>
             <div id="chat-content" ref="chatContent">
@@ -39,7 +41,11 @@
                 <div v-for="(message, index) in messages" :key="index" class="chat-message">
                     <div class="chat-block">
                         <!-- id='me'로 컨트롤 -->
-                        <div class="chat-content" :id="message.user">
+                        <div v-if="message.sent_by_biz_member_id === 1" class="chat-content" style="margin-left: auto">
+                            <div class="chat-username">{{ message.user }}</div>
+                            {{ message.text }}
+                        </div>
+                        <div v-else class="chat-content" style="margin-right: auto">
                             <div class="chat-username">{{ message.user }}</div>
                             {{ message.text }}
                         </div>
@@ -66,6 +72,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
     data() {
         return {
@@ -83,10 +91,44 @@ export default {
             return this.$route.params.chat_id;
         },
     },
+    mounted() {
+        axios
+            .get('http://localhost:8080/query/view/chat/select/' + this.$route.params.chat_id)
+            .then((response) => {
+                // 서버에서 받아온 데이터로 applicants 배열 업데이트
+                console.log(response.data);
+                const data = response.data;
+                // this.applicants = response.data.map((item) => ({
+                //     image_url: item.image_url || 'default.jpg', // 썸네일 이미지 경로 (기본값 포함)
+                //     userprofile: item.userprofile || '지원자 타이틀', // 지원자 타이틀
+
+                //     apply_id: item.apply_id,
+                //     member_id: item.member_id,
+                //     announcement_id: item.announcement_id,
+
+                //     announcement: item.announcement,
+                //     nick_name: item.nick_name,
+                //     apply_date: item.apply_date,
+                //     chat_created: item.chat_created,
+                //     user_hired: item.user_hired,
+                // }));
+                this.messages = data.map((item) => ({
+                    user: item.sender_name,
+                    text: item.content,
+                    sent_by_biz_member_id: item.sent_by_biz_member_id,
+                    sent_by_member_id: item.sent_by_member_id,
+                }));
+                // console.log(this.applicants);
+            })
+            .catch((error) => {
+                console.error('There was an error fetching the applicants data:', error);
+            });
+    },
     methods: {
         // Init: 채팅방 입장시 입장한 유저 이름을 전달해야 합니다.
         Init() {
             if (this.inputedUsername.trim() !== '') {
+                // TODO 0829 user 값을 입력받아야 함
                 this.participatedUsername = this.inputedUsername; // user 값을 새로운 이름으로 변경
                 console.log('Username changed to: ${this.user}');
 
@@ -109,7 +151,7 @@ export default {
         autoResize() {
             const textarea = this.$refs.textarea;
             textarea.style.height = 'auto'; // 높이를 초기화하여 스크롤 높이를 올바르게 계산
-            textarea.styel.height = `${textarea.scrollHeight}px`; // scrollHeight에 맞춰 높이 조정
+            textarea.style.height = `${textarea.scrollHeight}px`; // scrollHeight에 맞춰 높이 조정
         },
         sendMessage() {
             console.log(this.newMessae);
@@ -342,15 +384,5 @@ export default {
     word-wrap: break-word; /* 길어진 단어를 줄바꿈 */
     overflow-wrap: break-word; /* 길어진 단어가 폭을 넘을 경우 줄바꿈 */
     white-space: normal; /* 텍스트가 폭을 넘으면 줄바꿈 */
-}
-
-#me {
-    margin-left: auto;
-    color: black;
-}
-
-#other {
-    margin-right: auto;
-    color: black;
 }
 </style>
