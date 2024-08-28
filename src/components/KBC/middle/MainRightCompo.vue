@@ -34,6 +34,15 @@
             <button type="button" @click.prevent="checkLoginStatus">로그인 확인</button>
         </div>
     </div>
+    <!-- 아이디 찾기 모달 -->
+    <find-id-popup :isOpen="showFindIdPopup" :activeTab="activeTab" @close="showFindIdPopup = false" />
+
+    <!-- 비밀번호 찾기 모달 -->
+    <find-password-popup
+        :isOpen="showFindPasswordPopup"
+        :activeTab="activeTab"
+        @close="showFindPasswordPopup = false"
+    />
 </template>
 
 <script>

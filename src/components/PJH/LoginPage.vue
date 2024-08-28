@@ -59,7 +59,6 @@
 </template>
 
 <script>
-import axios from 'axios';
 import FindIdPopup from './FindIdPopup.vue';
 import FindPasswordPopup from './FindPasswordPopup.vue';
 
@@ -81,10 +80,11 @@ export default {
     FindPasswordPopup
   },
   methods: {
-    async login() {
-      
+    login() {
+      // 사업자 로그인 처리
+      console.log('Logging in with', this.businessId, this.password);
+      // 로그인 성공 시 리디렉션 등
     },
-
     signup() {
       // 회원가입 페이지로 이동
       console.log('Navigating to signup page');
