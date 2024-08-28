@@ -71,10 +71,11 @@ const routes = [
         name: 'ChatApply',
         component: ChatApply,
     },
+    {
         path: '/:pathMatch(.*)*',
         name: 'NotFound',
         component: NotFound,
-      },
+    },
     {
         path: '/500',
         name: 'ServerError',
