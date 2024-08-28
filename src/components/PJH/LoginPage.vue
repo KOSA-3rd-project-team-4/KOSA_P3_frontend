@@ -113,12 +113,9 @@ export default {
             this.$router.push('/signup'); // 라우터가 설정된 경우
         },
         loginWithNaver() {
-            const clientId = 'Pd3ZheYPcGa654DU7dXy';
-            const redirectUri = encodeURIComponent('http://localhost:5173/login/oauth2/code/naver');
-            const state = 'RANDOM_STATE_STRING'; // 보안을 위해 고유한 상태 값을 사용합니다.
-            const naverAuthUrl = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&state=${state}`;
-            window.location.href = naverAuthUrl;
-        },
+            const naverAuthUrl = 'http://localhost:8080/oauth2/authorization/naver';
+            window.location.href = naverAuthUrl;  // 네이버 로그인 페이지로 리디렉션
+          },
     },
 };
 </script>
