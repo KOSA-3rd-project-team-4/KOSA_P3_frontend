@@ -3,9 +3,17 @@ import LoginPage from '../components/PJH/LoginPage.vue';
 import SignUpPage from '../components/PJH/SignUpPage.vue';
 import MainPage from '../components/KBC/MainPage.vue';
 import CardView from '../components/KBC/middle/CardView.vue';
-import MapView from '../components/KBC/middle/MapView.vue';
+import KakaoMap from '../components/SJA/KakaoMap.vue';
 import JobList from '../components/KBC/middle/JobList.vue';
 import ResumeList from '../components/KBC/resume/ResumeList.vue';
+
+import PartTimeJobList from '../components/HJH/middle/PartTimeJobList.vue';
+import PartTimeJobPost from '../components/HJH/middle/PartTimeJobPost.vue';
+import ApplicantsList from '../components/HJH/middle/ApplicantsList.vue';
+import ChatApply from '../components/HJH/middle/ChatApply.vue';
+
+import NotFound from '../components/PJH/404ErrorPage.vue';
+import ServerError from '../components/PJH/500ErrorPage.vue';
 import ResumeDetail from '../components/KBC/resume/ResumeDetail.vue';
 
 const routes = [
@@ -22,7 +30,7 @@ const routes = [
             {
                 path: 'map',
                 name: 'MapView',
-                component: MapView,
+                component: KakaoMap,
             },
         ],
     },
@@ -39,12 +47,37 @@ const routes = [
     {
         path: '/joblist/:category',
         name: 'JobList',
-        component: JobList,
+        component: PartTimeJobList,
     },
     {
         path: '/resume',
         name: 'ResumeList',
         component: ResumeList,
+    },
+    {
+        path: '/job/post/:announcement_id', // 새 라우트 추가
+        name: 'PartTimeJobPost',
+        component: PartTimeJobPost,
+    },
+    {
+        path: '/job/applicant/:applicant_id',
+        name: 'ApplicantList',
+        component: ApplicantsList,
+    },
+    {
+        path: '/chat/apply/:chat_id',
+        name: 'ChatApply',
+        component: ChatApply,
+    },
+    {
+        path: '/:pathMatch(.*)*',
+        name: 'NotFound',
+        component: NotFound,
+    },
+    {
+        path: '/500',
+        name: 'ServerError',
+        component: ServerError,
     },
     {
         path: '/resume-detail',

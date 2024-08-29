@@ -1,56 +1,81 @@
 import { createStore } from 'vuex';
+import createPersistedState from 'vuex-persistedstate';
 import axios from 'axios';
 
 const store = createStore({
     state: {
         users: [],
         user: '',
+        loginType: null,
     },
     mutations: {
-        ADD_USER(state, user) {
-            state.users.push(user);
-        },
         setUser(state, user) {
-            state.user = user; // 배열로 저장
+            state.user = user;
+            console.log(state.user);
         },
         clearUser(state) {
-            state.user = null; // 빈 배열로 초기화
+            state.user = null;
+            state.loginType = null;
+        },
+        setLoginType(state, type) {
+            state.loginType = type;
         },
     },
     actions: {
-        register({ commit }, user) {
-            return new Promise((resolve, reject) => {
-                try {
-                    commit('ADD_USER', user);
-                    resolve();
-                } catch (error) {
-                    reject(new Error('회원가입 처리 중 오류가 발생했습니다.'));
-                }
-            });
-        },
-        async fetchlogin({ commit }) {
+        async fetchBizLogin({ commit }) {
             try {
                 const response = await axios.get('http://localhost:8080/api/user', { withCredentials: true });
                 if (response.status === 200) {
-                    commit('setUser', response.data);
+                    console.log('안녕');
+                    console.log(response.data);
+                    commit('setUser', response.data), commit('setLoginType', 'normal');
                 }
             } catch (error) {
-                console.error('Failed to fetch user info:', error);
+                console.error('Failed to fetch business user info:', error);
                 commit('clearUser');
             }
         },
-        logout({ commit }) {
-            commit('clearUser');
+        async fetchMemberLogin({ commit }) {
+            try {
+                const response = await axios.get('http://localhost:8080/api/user', { withCredentials: true });
+                if (response.status === 200) {
+                    console.log('안녕');
+                    console.log(response.data);
+                    commit('setUser', response.data);
+                    commit('setLoginType', 'oauth');
+                    console.log('commit');
+                }
+            } catch (error) {
+                console.error('Failed to fetch member info:', error);
+                console.log('실패ㅜ');
+                commit('clearUser');
+            }
+        },
+        async logout({ commit }) {
+            try {
+                const response = await axios.post('http://localhost:8080/logout', {}, { withCredentials: true });
+                if (response.status === 200) {
+                    commit('clearUser');
+                    alert('로그아웃 완료!');
+                }
+            } catch (error) {
+                console.error('Logout failed:', error);
+            }
         },
     },
     getters: {
         isAuthenticated(state) {
             return !!state.user;
-            // return state.users.length > 0; // 사용자가 로그인 상태인지 확인
         },
         getUser: (state) => state.user,
         getUsers: (state) => state.users,
+        getLoginType: (state) => state.loginType,
     },
+    plugins: [
+        createPersistedState({
+            storage: window.sessionStorage,
+        }),
+    ],
 });
 
 export default store;

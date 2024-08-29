@@ -9,6 +9,7 @@
             </button>
         </div>
 
+        <!-- 개인회원 로그인 -->
         <div v-if="activeTab === 'personal'" class="personal-login">
             <h2>개인회원 로그인</h2>
             <div class="oauth-buttons">
@@ -21,7 +22,7 @@
             <form @submit.prevent="login">
                 <div>
                     <label for="businessId">아이디</label>
-                    <input type="text" v-model="username" required />
+                    <input type="text" v-model="businessId" required />
                 </div>
                 <div>
                     <label for="password">비밀번호</label>
@@ -59,7 +60,7 @@ export default {
     data() {
         return {
             activeTab: 'personal',
-            username: '',
+            businessId: '',
             password: '',
             showFindIdPopup: false,
             showFindPasswordPopup: false,
@@ -73,39 +74,10 @@ export default {
         FindPasswordPopup,
     },
     methods: {
-        ...mapActions(['fetchlogin']),
-        async login() {
+        login() {
             // 사업자 로그인 처리
-            console.log('Logging in with', this.username, this.password);
+            console.log('Logging in with', this.businessId, this.password);
             // 로그인 성공 시 리디렉션 등
-            try {
-                const response = await axios.post(
-                    'http://localhost:8080/login',
-                    qs.stringify({
-                        username: this.username,
-                        password: this.password,
-                    }),
-                    {
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded',
-                        },
-                        withCredentials: true,
-                    },
-                ); // withCredentials: true로 세션 쿠키 포함
-
-                if (response.status === 200) {
-                    this.fetchlogin();
-                    // 로그인 성공 시, 원하는 페이지로 이동
-                    this.$router.push('/');
-                }
-            } catch (error) {
-                // HTTP 상태 코드와 메시지를 확인하여 에러를 처리합니다.
-                if (error.response && error.response.status === 401) {
-                    this.errorMessage = error.response.data;
-                } else {
-                    this.errorMessage = 'Login failed. Please check your credentials.';
-                }
-            }
         },
         signup() {
             // 회원가입 페이지로 이동
