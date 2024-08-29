@@ -5,7 +5,6 @@ import MainPage from '../components/KBC/MainPage.vue';
 import CardView from '../components/KBC/middle/CardView.vue';
 import KakaoMap from '../components/SJA/KakaoMap.vue';
 import JobList from '../components/KBC/middle/JobList.vue';
-import ResumeList from '../components/KBC/resume/ResumeList.vue';
 import MyPage from '../components/YDH/user/views/MyPage.vue';
 import BizPage from '../components/YDH/biz/views/BizMyPage.vue';
 import PartTimeJobList from '../components/HJH/middle/PartTimeJobList.vue';
@@ -18,6 +17,7 @@ import ResumeDetail from '../components/KBC/resume/ResumeDetail.vue';
 import Chat from '../components/HJH/middle/Chat.vue';
 import Editor from '../components/HJH/middle/Editor.vue';
 import PostEditor from '../components/HJH/PostEditor.vue';
+import ResumePool from '../components/KBC/resume/ResumePool.vue';
 
 const routes = [
     {
@@ -54,8 +54,8 @@ const routes = [
     },
     {
         path: '/resume',
-        name: 'ResumeList',
-        component: ResumeList,
+        name: 'ResumePool',
+        component: ResumePool,
     },
     {
         path: '/mypage',

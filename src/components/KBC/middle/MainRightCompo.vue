@@ -15,7 +15,7 @@
                     </li>
                     <hr class="large-divider" />
                     <li class="mode-right">
-                        <router-link to="/resume">
+                        <router-link to="/login">
                             <div><img src="/src/assets/KBC/company.png" /></div>
                             <div>기업회원</div>
                         </router-link>
@@ -30,9 +30,9 @@
                 </div>
             </div>
         </div>
-        <div>
+        <!-- <div>
             <button type="button" @click.prevent="checkLoginStatus">로그인 확인</button>
-        </div>
+        </div> -->
     </div>
     <!-- 아이디 찾기 모달 -->
     <find-id-popup :isOpen="showFindIdPopup" :activeTab="activeTab" @close="showFindIdPopup = false" />
@@ -71,20 +71,19 @@ export default {
         }),
     },
     methods: {
-  async checkLoginStatus() {
-    try {
-      const response = await axios.get('http://localhost:8080/current-user', {withCredentials: true});
-      if (response.data.includes('Logged in as')) {
-        console.log(response.data);
-      } else {
-        console.log('User not logged in');
-      }
-    } catch (error) {
-      console.error('Error checking login status:', error);
-    }
-  }
-}
-
+        async checkLoginStatus() {
+            try {
+                const response = await axios.get('http://localhost:8080/current-user', { withCredentials: true });
+                if (response.data.includes('Logged in as')) {
+                    console.log(response.data);
+                } else {
+                    console.log('User not logged in');
+                }
+            } catch (error) {
+                console.error('Error checking login status:', error);
+            }
+        },
+    },
 };
 </script>
 

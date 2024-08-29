@@ -8,13 +8,15 @@
                         <img :src="item.logo" alt="company logo" />
                     </span>
                     <span class="company">
-                        {{ item.company }}
+                        {{ item.bizname }}
                     </span>
                     <span class="title">
                         {{ item.title }}
                     </span>
                     <span class="wrap">
-                        <span class="local"><img src="/src/assets/KBC/locationpointer.png" />{{ item.location }}</span>
+                        <span class="local"
+                            ><img src="/src/assets/KBC/locationpointer.png" />{{ item.location_description }}</span
+                        >
                         <span class="pay">
                             <span class="timepay">시급</span>
                             <span class="money">{{ item.salary }}</span>
@@ -22,8 +24,12 @@
                     </span>
                     <div class="tag">
                         <ul class="tag-contents">
-                            <li v-for="(tag, tagIndex) in filteredTags(item.id)" :key="tagIndex" class="tag-card">
-                                <span>{{ tag.value }}</span>
+                            <li
+                                v-for="(tag, tagIndex) in filteredTags(item.announcement_id)"
+                                :key="tagIndex"
+                                class="tag-card"
+                            >
+                                <span>{{ tag.tagname }}</span>
                             </li>
                         </ul>
                     </div>
@@ -34,6 +40,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
     name: 'CardView',
 
@@ -45,31 +53,28 @@ export default {
     },
 
     methods: {
-        fetchData(fileName, targetArray) {
-            fetch(`/src/assets/KBC/${fileName}`) // public 디렉토리에 있는 파일 경로
+        // Spring Boot API에서 데이터 가져오기
+        fetchData(url, targetArray) {
+            axios
+                .get(url)
                 .then((response) => {
-                    if (!response.ok) {
-                        throw new Error(`Failed to fetch ${fileName}: ${response.statusText}`);
-                    }
-                    return response.json();
-                })
-                .then((data) => {
-                    this[targetArray] = data;
+                    this[targetArray] = response.data;
                 })
                 .catch((error) => {
-                    console.error(`Error loading ${fileName}:`, error);
+                    console.error(`Error loading ${url}:`, error);
                 });
         },
 
         // 특정 item.id에 대해 tagList를 필터링하는 메소드
         filteredTags(itemId) {
-            return this.tagList.filter((tag) => tag.an_id === itemId);
+            return this.tagList.filter((tag) => tag.announcement_id === itemId);
         },
     },
 
     mounted() {
-        this.fetchData('tempdata.json', 'jobListings');
-        this.fetchData('tagdata.json', 'tagList');
+        // 스프링부트에서 데이터를 가져오는 코드로 수정
+        this.fetchData('http://localhost:8080/api/job-listings', 'jobListings');
+        this.fetchData('http://localhost:8080/api/tags', 'tagList');
     },
 };
 </script>

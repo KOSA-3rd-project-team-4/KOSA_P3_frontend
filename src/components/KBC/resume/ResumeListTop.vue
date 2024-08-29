@@ -33,14 +33,14 @@
                 <!-- 검색 결과 드롭다운 -->
                 <ul v-show="searchResults.length > 0" class="search-dropdown">
                     <li v-for="(result, index) in searchResults" :key="index" @click="addTag(result)">
-                        {{ result.value }}
+                        {{ result.name }}
                     </li>
                 </ul>
             </div>
             <div class="underline"></div>
             <div class="taglist-container">
                 <div v-for="(item, index) in filteredTags" :key="index" class="tag-item">
-                    {{ item.value }}
+                    {{ item.name }}
                     <span class="remove-tag" @click="removeTag(index)">x</span>
                 </div>
             </div>
@@ -49,6 +49,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
     data() {
         return {
@@ -80,16 +82,18 @@ export default {
             }
         },
         loadTags() {
-            fetch('/src/assets/KBC/tagdata.json')
-                .then((response) => response.json())
-                .then((data) => {
-                    this.allTags = data;
+            axios
+                .get('http://localhost:8080/api/alltag')
+                .then((response) => {
+                    this.allTags = response.data;
                 })
-                .catch((error) => console.error('Error loading tags:', error));
+                .catch((error) => {
+                    console.error('Error loading tags:', error);
+                });
         },
         searchData() {
             if (this.searchQuery.trim()) {
-                this.searchResults = this.allTags.filter((tag) => tag.value.includes(this.searchQuery));
+                this.searchResults = this.allTags.filter((tag) => tag.name.includes(this.searchQuery));
             } else {
                 this.searchResults = [];
             }

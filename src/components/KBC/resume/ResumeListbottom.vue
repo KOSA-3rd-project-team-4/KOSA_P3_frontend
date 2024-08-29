@@ -1,7 +1,7 @@
 <template>
     <div class="resume-bottom-container">
         <div class="resume-card-container">
-            <router-link v-for="resume in resumes" :key="resume.id" to="/resume-detail" class="resume-card">
+            <router-link v-for="(resume, index) in resumeListings" :key="index" class="resume-card">
                 <div class="thumbnail">
                     <span class="profile-img">
                         <img src="/src/assets/KBC/person.png" alt="Profile Image" />
@@ -9,14 +9,18 @@
                 </div>
                 <div class="summary-info">
                     <div class="name-container">
-                        <span class="name">{{ resume.member.nick_name }}</span>
+                        <span class="name">{{ resume.nick_name }}</span>
                         <!-- <span class="age">{{ resume.member.age }}대</span> -->
                     </div>
                     <div class="pr-contents">
                         <span class="contents">{{ resume.title }}</span>
                     </div>
                     <div class="tag-list">
-                        <div class="tags">{{ resume.tag }}</div>
+                        <ul class="tag-contents">
+                            <li v-for="(tag, tagIndex) in filteredTags(resume.pr_id)" :key="tagIndex" class="tag-card">
+                                <span>{{ tag.tag }}</span>
+                            </li>
+                        </ul>
                     </div>
                 </div>
                 <div class="submit-resume">
@@ -31,26 +35,39 @@
 import axios from 'axios';
 
 export default {
+    name: 'ResumeListbottom',
+
     data() {
         return {
-            resumes: [], // 데이터를 담을 배열
+            resumeListings: [],
+            resumetagList: [],
         };
     },
-    created() {
-        // 컴포넌트가 생성될 때 데이터 가져오기
-        this.fetchResumes();
-    },
-    methods: {
-        async fetchResumes() {
-            try {
-                const response = await axios.get('http://localhost:8080/api/resume-list');
-                this.resumes = response.data;
 
-                console.log(this.resumes); // 서버에서 받은 데이터를 배열에 저장
-            } catch (error) {
-                console.error('Error fetching resumes:', error);
-            }
+    methods: {
+        // Spring Boot API에서 데이터 가져오기
+        fetchData(url, targetArray) {
+            axios
+                .get(url)
+                .then((response) => {
+                    this[targetArray] = response.data;
+                })
+                .catch((error) => {
+                    console.error(`Error loading ${url}:`, error);
+                });
+            console.log(this[targetArray]);
         },
+
+        // 특정 item.id에 대해 tagList를 필터링하는 메소드
+        filteredTags(itemId) {
+            return this.resumetagList.filter((tag) => tag.pr_id === itemId);
+        },
+    },
+
+    mounted() {
+        // 스프링부트에서 데이터를 가져오는 코드로 수정
+        this.fetchData('http://localhost:8080/api/resume-list', 'resumeListings');
+        this.fetchData('http://localhost:8080/api/resume-tags', 'resumetagList');
     },
 };
 </script>
@@ -93,6 +110,12 @@ export default {
     display: grid;
     justify-content: left;
     align-items: center;
+    box-sizing: border-box;
+    grid-template-columns: 1fr;
+}
+.summary-info div {
+    width: 100%;
+    box-sizing: border-box;
 }
 .summary-info .name-container {
     margin-bottom: 10px;
@@ -104,18 +127,14 @@ export default {
 }
 .summary-info .pr-contents {
     width: 100%;
+    text-align: left;
 }
 .summary-info .tag-list {
     width: 100%;
     display: flex;
     justify-content: left;
     align-items: center;
-}
-
-.tag-list .tags {
-    border: 1px solid #f7f8fa;
-    border-radius: 4px;
-    background-color: #f7f8fa;
+    text-align: left;
 }
 
 .submit-resume {
@@ -136,5 +155,29 @@ export default {
 
 .submit-resume button:hover {
     background-color: #7a99d4; /* 살짝 어두운 색상 */
+}
+
+.tag-contents {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: left;
+    align-items: center;
+}
+
+.tag-contents li {
+    overflow: unset;
+    float: left;
+    position: relative;
+    /* width: calc(30% - 15px); */
+    height: 20px;
+    border-radius: 4px;
+    background-color: #b6e6f6;
+    margin: 0 6px 2px 0;
+}
+
+.tag-card {
+    border: 1px solid #92a9b1;
+    border-radius: 4px;
+    background-color: #92a9b1;
 }
 </style>

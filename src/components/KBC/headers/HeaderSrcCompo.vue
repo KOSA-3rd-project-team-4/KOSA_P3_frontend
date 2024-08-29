@@ -19,6 +19,9 @@
                 <hr />
                 <router-link to="/signup">회원가입</router-link>
             </div>
+            <div class="company-service">
+                <router-link to="/resume">인재풀</router-link>
+            </div>
         </div>
     </div>
 </template>
@@ -30,9 +33,9 @@ export default {
     computed: {
         ...mapGetters(['isAuthenticated', 'getUser']),
         user() {
-            return{
-                username: this.getUser.bizname || this.getUser.nick_name
-            }
+            return {
+                username: this.getUser.bizname || this.getUser.nick_name,
+            };
         },
     },
     methods: {
