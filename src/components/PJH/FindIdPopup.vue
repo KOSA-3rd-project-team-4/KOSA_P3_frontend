@@ -1,47 +1,60 @@
 <template>
-    <div v-if="isOpen && activeTab === 'business'" class="popup-overlay" @click.self="closeModal">
-      <div class="popup">
-        <h2>아이디 찾기</h2>
-        <form @submit.prevent="findId">
-          <div>
-            <label for="email">이메일 주소</label>
-            <input type="email" v-model="email" required />
-          </div>
-          <button type="submit">아이디 찾기</button>
-          <button type="button" @click="closeModal">닫기</button>
-        </form>
-      </div>
+  <div v-if="isOpen && activeTab === 'business'" class="popup-overlay" @click.self="closeModal">
+    <div class="popup">
+      <h2>아이디 찾기</h2>
+      <form @submit.prevent="findId">
+        <div>
+          <label for="email">이메일 주소</label>
+          <input type="email" v-model="email" required />
+        </div>
+        <button type="submit">아이디 찾기</button>
+        <button type="button" @click="closeModal">닫기</button>
+      </form>
     </div>
-  </template>
-  
-  <script>
-  export default {
-    props: {
-      isOpen: {
-        type: Boolean,
-        required: true
-      },
-      activeTab: {
-        type: String,
-        required: true
-      }
+  </div>
+</template>
+
+<script>
+import axios from 'axios';
+
+export default {
+  props: {
+    isOpen: {
+      type: Boolean,
+      required: true
     },
-    data() {
-      return {
-        email: ''
-      };
-    },
-    methods: {
-      findId() {
-        console.log('Finding ID with email:', this.email);
-        // 아이디 찾기 로직 추가
-      },
-      closeModal() {
-        this.$emit('close');
-      }
+    activeTab: {
+      type: String,
+      required: true
     }
-  };
-  </script>
+  },
+  data() {
+    return {
+      email: ''
+    };
+  },
+  methods: {
+    async findId() {
+      try {
+        const response = await axios.get(`http://localhost:8080/query/bizmembers/findByEmail`, {
+          params: { email: this.email }
+        });
+        alert(`당신의 아이디는: ${response.data}`);
+      } catch (error) {
+        if (error.response && error.response.status === 404) {
+          alert('해당 이메일로 등록된 아이디를 찾을 수 없습니다.');
+        } else {
+          console.error('아이디 찾기 오류:', error);
+          alert('아이디를 찾는 중 오류가 발생했습니다. 다시 시도해 주세요.');
+        }
+      }
+    },
+    closeModal() {
+      this.$emit('close');
+    }
+  }
+};
+</script>
   
   <style scoped>
   /* 모달 스타일 */
