@@ -16,6 +16,7 @@ import NotFound from '../components/PJH/404ErrorPage.vue';
 import ServerError from '../components/PJH/500ErrorPage.vue';
 import ResumeDetail from '../components/KBC/resume/ResumeDetail.vue';
 import Chat from '../components/HJH/middle/Chat.vue';
+import Editor from '../components/HJH/middle/Editor.vue';
 
 const routes = [
     {
@@ -59,6 +60,11 @@ const routes = [
         path: '/job/post/:announcement_id', // 새 라우트 추가
         name: 'PartTimeJobPost',
         component: PartTimeJobPost,
+    },
+    {
+        path: '/job/post/edit',
+        name: 'EditPost',
+        component: Editor,
     },
     {
         path: '/job/applicant/:applicant_id',
