@@ -46,6 +46,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import axios from 'axios';
 import UserProfile from '../../PJH/UserProfile.vue';
 import FindIdPopup from '../../PJH/FindIdPopup.vue';
@@ -54,7 +55,6 @@ import FindPasswordPopup from '../../PJH/FindPasswordPopup.vue';
 export default {
     data() {
         return {
-            isLoggedIn: false, // 여기에 로그인 여부를 임의로 설정합니다.
             showFindIdPopup: false,
             showFindPasswordPopup: false,
             activeTab: 'business',
@@ -65,10 +65,15 @@ export default {
         FindIdPopup,
         FindPasswordPopup,
     },
+    computed: {
+        ...mapGetters({
+            isLoggedIn: 'isAuthenticated',
+        }),
+    },
     methods: {
   async checkLoginStatus() {
     try {
-      const response = await axios.get('http://localhost:8080/current-user');
+      const response = await axios.get('http://localhost:8080/current-user', {withCredentials: true});
       if (response.data.includes('Logged in as')) {
         console.log(response.data);
       } else {

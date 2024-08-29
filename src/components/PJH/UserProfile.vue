@@ -5,12 +5,12 @@
                 <img src="/src/assets/PJH/profile.png" alt="Profile Image" class="profile-image" />
             </div>
             <div class="profile-right">
-                <p class="user-name">{{ userName }}</p>
-                <a href="#" class="manage-info-link">내 정보 관리</a>
+                <p class="user-name">{{ user.username || user.nick_name }}</p>
+                <a href="#" class="manage-info-link" @click.prevent="manageInfo">내 정보 관리</a>
             </div>
         </div>
         <div class="edit-resume">
-            <a href="#" class="edit-resume-link">
+            <a href="#" class="edit-resume-link" @click.prevent="editResume">
                 <img src="/src/assets/PJH/edit-icon.png" alt="Edit Icon" class="edit-icon" />
                 이력서 관리
             </a>
@@ -19,11 +19,16 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
-    data() {
-        return {
-            userName: '박정환', // 여기에 사용자 이름을 임의로 설정합니다.
-        };
+    computed: {
+        ...mapGetters(['isAuthenticated', 'getUser']),
+        user() {
+            return{
+                username: this.getUser.bizname || this.getUser.nick_name
+            }
+        },
     },
     methods: {
         manageInfo() {
