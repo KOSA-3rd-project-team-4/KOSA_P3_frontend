@@ -17,6 +17,7 @@ import ServerError from '../components/PJH/500ErrorPage.vue';
 import ResumeDetail from '../components/KBC/resume/ResumeDetail.vue';
 import Chat from '../components/HJH/middle/Chat.vue';
 import Editor from '../components/HJH/middle/Editor.vue';
+import PostEditor from '../components/HJH/PostEditor.vue';
 
 const routes = [
     {
@@ -64,7 +65,7 @@ const routes = [
     {
         path: '/job/post/edit',
         name: 'EditPost',
-        component: Editor,
+        component: PostEditor,
     },
     {
         path: '/job/applicant/:applicant_id',
