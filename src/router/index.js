@@ -4,7 +4,6 @@ import SignUpPage from '../components/PJH/SignUpPage.vue';
 import MainPage from '../components/KBC/MainPage.vue';
 import CardView from '../components/KBC/middle/CardView.vue';
 import KakaoMap from '../components/SJA/KakaoMap.vue';
-import JobList from '../components/KBC/middle/JobList.vue';
 import MyPage from '../components/YDH/user/views/MyPage.vue';
 import BizPage from '../components/YDH/biz/views/BizMyPage.vue';
 import PartTimeJobList from '../components/HJH/middle/PartTimeJobList.vue';
