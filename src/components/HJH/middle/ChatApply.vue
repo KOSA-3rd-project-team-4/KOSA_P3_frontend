@@ -77,6 +77,16 @@ export default {
             return userData;
         },
     },
+    async created() {
+      const loginType = this.$store.getters.getLoginType;
+
+      // 로그인 유형에 따라 필요한 경우에만 fetch 호출
+      if (loginType === 'oauth' && !this.$store.getters.isAuthenticated) {
+        await this.$store.dispatch('fetchMemberLogin');
+      } else if (loginType === 'normal' && !this.$store.getters.isAuthenticated) {
+        await this.$store.dispatch('fetchBizLogin');
+      }
+    },
     data() {
         return {
             ws: null,
