@@ -1,23 +1,30 @@
 <template>
   <div id="app">
-    <router-view/>
+    <!-- headers 컴포넌트를 화면에 렌더링 -->
+    <headers />
+
+    <!-- 라우터를 통해 로드된 컴포넌트를 렌더링 -->
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
+import headers from './components/YDH/headers/headers.vue';
 
 export default {
-  name: 'App',
+  name: "App",
+  components: {
+    headers,
+  },
+  data() {
+    return {};
+  },
 };
 </script>
 
 <style>
-@import url('/src/assets/KBC/base.css');
+/* 스타일 정의 */
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+
 }
 </style>
