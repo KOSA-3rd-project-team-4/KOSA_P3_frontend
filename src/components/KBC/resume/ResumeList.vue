@@ -6,8 +6,7 @@
         </div>
         <div class="resume-list-main">
             <div class="resume-list-main-container">
-                <resume-list-left></resume-list-left>
-                <resume-list-right></resume-list-right>
+                <resume-listbottom></resume-listbottom>
             </div>
         </div>
     </div>
@@ -15,15 +14,13 @@
 
 <script>
 import HeaderCompo from '../layouts/HeaderCompo.vue';
-import ResumeListLeft from './ResumeListLeft.vue';
-import ResumeListRight from './ResumeListRight.vue';
 import ResumeListTop from './ResumeListTop.vue';
+import ResumeListbottom from './ResumeListbottom.vue';
 
 export default {
     components: {
         ResumeListTop,
-        ResumeListLeft,
-        ResumeListRight,
+        ResumeListbottom,
         HeaderCompo,
     },
 };
