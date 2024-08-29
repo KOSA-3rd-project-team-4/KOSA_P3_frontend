@@ -16,6 +16,10 @@ import NotFound from '../components/PJH/404ErrorPage.vue';
 import ServerError from '../components/PJH/500ErrorPage.vue';
 import ResumeDetail from '../components/KBC/resume/ResumeDetail.vue';
 
+import Chat from '../components/HJH/middle/Chat.vue';
+import Editor from '../components/HJH/middle/Editor.vue';
+import PostEditor from '../components/HJH/PostEditor.vue';
+
 const routes = [
     {
         path: '/',
@@ -60,6 +64,11 @@ const routes = [
         component: PartTimeJobPost,
     },
     {
+        path: '/job/post/edit',
+        name: 'EditPost',
+        component: PostEditor,
+    },
+    {
         path: '/job/applicant/:applicant_id',
         name: 'ApplicantList',
         component: ApplicantsList,
@@ -68,6 +77,11 @@ const routes = [
         path: '/chat/apply/:chat_id',
         name: 'ChatApply',
         component: ChatApply,
+    },
+    {
+        path: '/chat',
+        name: 'Chat',
+        component: Chat,
     },
     {
         path: '/:pathMatch(.*)*',
