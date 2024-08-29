@@ -111,7 +111,7 @@ const routes = [
             },
             {
                 path: 'announcement/create',
-                name: 'AnnouncementEdit',
+                name: 'AnnouncementCreate',
                 component: () => import('../components/YDH/biz/Announcement/AnnouncementCreate.vue'),
             },
             // 추가적인 비즈니스 유저 경로...

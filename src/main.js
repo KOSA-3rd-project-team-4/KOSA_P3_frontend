@@ -1,6 +1,6 @@
 import { createApp } from 'vue';
 import App from './App.vue';
-import router from './router';
+import router from './router/index.js';
 import store from './store';  // Vuex 스토어를 사용하는 경우 필요
 import axios from 'axios';  // axios를 가져옵니다
 import './styles.css';
