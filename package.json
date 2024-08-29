@@ -9,6 +9,8 @@
         "preview": "vite preview"
     },
     "dependencies": {
+        "@esbuild/win32-x64": "^0.23.1",
+        "@rollup/rollup-win32-x64-msvc": "^4.21.1",
         "@vueuse/core": "^11.0.1",
         "axios": "^1.7.4",
         "qs": "^6.13.0",
