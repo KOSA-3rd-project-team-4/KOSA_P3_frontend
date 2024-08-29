@@ -1,4 +1,6 @@
 <template>
+<div>
+    <header-compo></header-compo>
     <div id="app-content">
     <!-- <div v-if="user" id="app-content"> -->
         <div id="app">
@@ -49,6 +51,7 @@
             </div>
         </div>
     </div>
+</div>
 </template>
 
 <script>
@@ -56,10 +59,13 @@ import { mapGetters } from 'vuex';
 import axios from 'axios';
 import Stomp from 'stompjs';
 import SockJS from 'sockjs-client';
+import HeaderCompo from '../../KBC/layouts/HeaderCompo.vue';
 
 export default {
     name: 'ChatApply',
-    components: {},
+    components: {
+        HeaderCompo,
+    },
     computed: {
         chat_id() {
             return this.$route.params.chat_id;
@@ -183,7 +189,7 @@ export default {
     left: 0;
     top: 0;
     width: 100%;
-    height: 100vh;
+    height: 85vh;
     position: relative;
     /* background-color: rgb(196, 214, 124); */
     align-content: space-around;

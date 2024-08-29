@@ -1,4 +1,6 @@
 <template>
+  <div>
+    <header-compo></header-compo>
     <div id="post-background">
     <!-- <div v-if="user" id="post-background"> -->
       <div id="post-block">
@@ -74,15 +76,19 @@
         <!-- TODO: 사업자일 경우 지원자 목록으로 버튼 추가-->
       </div>
     </div>
-  </template>
+  </div>
+</template>
   
   <script>
   import { mapGetters } from 'vuex';
   import axios from 'axios';
+  import HeaderCompo from '../../KBC/layouts/HeaderCompo.vue';
   
   export default {
     name: 'JobPost',
-    components: {},
+    components: {
+      HeaderCompo,
+    },
     computed: {
       ...mapGetters(['getUser']),
       user() {

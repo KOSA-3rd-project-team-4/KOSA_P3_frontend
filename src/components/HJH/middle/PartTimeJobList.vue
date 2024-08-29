@@ -1,6 +1,8 @@
 <template>
-    <!-- <div id="posts-background"> -->
-    <div v-if="user" id="posts-background">
+<div>
+    <header-compo></header-compo>
+    <div id="posts-background">
+    <!-- <div v-if="user" id="posts-background"> -->
         <div id="posts-block">
             <div id="posts-header">
                 <div id="posts-header-content">
@@ -41,7 +43,6 @@
                 >
                     <div class="post-content-title">
                         <div class="post-content-title-thumbnail">
-                            <!-- {{ post.image_url }} -->
                             <img :src="post.image_url" alt="지원자 이미지" class="applicant-thumbnail">
                         </div>
                         <div v-if="post.favorate" class="favorate">T</div>
@@ -70,15 +71,19 @@
             </div>
         </div>
     </div>
+</div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
 import axios from 'axios'; // axios 가져오기
+import HeaderCompo from '../../KBC/layouts/HeaderCompo.vue';
 
 export default {
     name: 'JobList',
-    components: {},
+    components: {
+        HeaderCompo,
+    },
     computed: {
         ...mapGetters(['getUser']),
         user() {

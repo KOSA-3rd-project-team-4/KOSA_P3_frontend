@@ -1,4 +1,6 @@
 <template>
+<div>
+    <header-compo></header-compo>
     <div id="root-applicants">
     <!-- <div v-if="user" id="root-applicants"> -->
         <div id="post-applicants">
@@ -85,15 +87,19 @@
             </div>
         </div>
     </div>
+</div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
 import axios from 'axios';
+import HeaderCompo from '../../KBC/layouts/HeaderCompo.vue';
 
 export default {
     name: 'Applies',
-    components: {},
+    components: {
+        HeaderCompo,
+    },
     computed: {
         ...mapGetters(['getUser']),
         user() {
