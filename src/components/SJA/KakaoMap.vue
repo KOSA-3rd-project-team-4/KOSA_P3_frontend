@@ -75,20 +75,14 @@
             </KakaoMap>
         </div>
     </div>
-    <ModalCompo :isOpen="isModalOpened" @modal-close="closeModal" @submit="submitHandler">
-        <template #header>Custom header</template>
-        <template #content>Custom content</template>
-        <template #footer>Custom content</template>
-    </ModalCompo>
 </template>
 
 <script setup>
 import axios from 'axios';
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import { KakaoMap, KakaoMapMarker, KakaoMapCustomOverlay } from 'vue3-kakao-maps';
-import ModalCompo from './ModalCompo.vue';
 import markerImageSrc from '../../assets/images/red_dot.png';
+import { KakaoMap, KakaoMapMarker, KakaoMapCustomOverlay } from 'vue3-kakao-maps';
 
 const router = useRouter();
 
