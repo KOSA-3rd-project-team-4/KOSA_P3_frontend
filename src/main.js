@@ -23,7 +23,5 @@ axios.interceptors.response.use(
 // axios를 전역 프로퍼티로 등록
 app.config.globalProperties.$axios = axios;
 app.use(router);
-app.use(store); // Vuex 스토어 사용
-
-// 애플리케이션을 특정 DOM 요소에 마운트
+app.use(store);
 app.mount('#app');
