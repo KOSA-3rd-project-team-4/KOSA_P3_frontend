@@ -25,17 +25,24 @@ export default {
     computed: {
         ...mapGetters(['isAuthenticated', 'getUser']),
         user() {
-            return{
-                username: this.getUser.bizname || this.getUser.nick_name
-            }
+            return {
+                username: this.getUser.bizname || this.getUser.nick_name,
+                isBiz: !!this.getUser.bizname, // bizname이 존재하면 true, 아니면 false
+            };
         },
     },
     methods: {
         manageInfo() {
-            alert('내 정보 관리 페이지로 이동합니다.');
+            // bizname이 존재하는 경우와 존재하지 않는 경우를 구분하여 경로를 설정
+            const routeName = this.user.isBiz ? 'BizProfileEdit' : 'ProfileEdit';
+            alert(`내 정보 관리 페이지로 이동합니다. (${routeName})`);
+            this.$router.push({ name: routeName });
         },
         editResume() {
-            alert('이력서 관리 페이지로 이동합니다.');
+            // bizname이 존재하는 경우와 존재하지 않는 경우를 구분하여 경로를 설정
+            const routeName = this.user.isBiz ? 'BizAnnouncements' : 'ResumeList';
+            alert(`내 정보 관리 페이지로 이동합니다. (${routeName})`);
+            this.$router.push({ name: routeName });
         },
     },
 };
