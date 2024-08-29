@@ -59,8 +59,23 @@
     display: grid;
     gap: 16px;
     grid-auto-flow: column dense;
+    align-items: center;
 }
 .account .wrap-service {
     position: relative;
     z-index: 2;
+}
+
+.user-info {
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: center;
+    justify-content: center;
+}
+.user-info button {
+    margin-top: 10px;
+    border: 1px solid #d3ebf7;
+    background-color: #fff;
+    font-weight: bold;
+    font-family: 'GodoM', sans-serif;
 }

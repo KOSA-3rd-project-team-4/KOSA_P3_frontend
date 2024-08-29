@@ -5,8 +5,14 @@ import MainPage from '../components/KBC/MainPage.vue';
 import CardView from '../components/KBC/middle/CardView.vue';
 import KakaoMap from '../components/SJA/KakaoMap.vue';
 import JobList from '../components/KBC/middle/JobList.vue';
+<<<<<<< Updated upstream
 import ResumeList from '../components/KBC/resume/ResumeList.vue';
 
+=======
+import ResumeList from '../components/KBC/resume/ResumePool.vue';
+import MyPage from '../components/YDH/user/views/MyPage.vue';
+import BizPage from '../components/YDH/biz/views/BizMyPage.vue';
+>>>>>>> Stashed changes
 import PartTimeJobList from '../components/HJH/middle/PartTimeJobList.vue';
 import PartTimeJobPost from '../components/HJH/middle/PartTimeJobPost.vue';
 import ApplicantsList from '../components/HJH/middle/ApplicantsList.vue';
@@ -19,6 +25,7 @@ import ResumeDetail from '../components/KBC/resume/ResumeDetail.vue';
 import Chat from '../components/HJH/middle/Chat.vue';
 import Editor from '../components/HJH/middle/Editor.vue';
 import PostEditor from '../components/HJH/PostEditor.vue';
+import ResumePool from '../components/KBC/resume/ResumePool.vue';
 
 const routes = [
     {
@@ -55,8 +62,8 @@ const routes = [
     },
     {
         path: '/resume',
-        name: 'ResumeList',
-        component: ResumeList,
+        name: 'ResumePool',
+        component: ResumePool,
     },
     {
         path: '/job/post/:announcement_id', // 새 라우트 추가
