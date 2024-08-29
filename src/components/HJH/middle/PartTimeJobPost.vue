@@ -1,5 +1,6 @@
 <template>
-    <div id="post-background">
+    <!-- <div id="post-background"> -->
+    <div v-if="user" id="post-background">
       <div id="post-block">
         <!-- Post Overview -->
         <div id="post-overview">
@@ -77,6 +78,7 @@
   
   <script>
   import { mapState } from 'vuex';
+  import { mapGetters } from 'vuex';
   import axios from 'axios';
   
   export default {
@@ -101,6 +103,12 @@
       };
     },
     computed: {
+      ...mapGetters(['getUser']),
+      user() {
+        const userData = this.getUser;
+        console.log('User data from Vuex:', userData);
+        return userData;
+      },
       ...mapState({
         user: state => state.users,
       }),

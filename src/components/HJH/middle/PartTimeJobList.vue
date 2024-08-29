@@ -1,5 +1,6 @@
 <template>
     <div id="posts-background">
+    <!-- <div v-if="user" id="posts-background"> -->
         <div id="posts-block">
             <div id="posts-header">
                 <div id="posts-header-content">
@@ -72,12 +73,19 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import axios from 'axios'; // axios 가져오기
 
 export default {
     name: 'JobList',
     components: {},
     computed: {
+        ...mapGetters(['getUser']),
+        user() {
+            const userData = this.getUser;
+            console.log('User data from Vuex:', userData);
+            return userData;
+        }, 
         category() {
             return this.$route.params.category;
         },
