@@ -6,7 +6,7 @@
         <div class="map">
             <KakaoMap :lat="coordinate.lat" :lng="coordinate.lng" :draggable="true" @onLoadKakaoMap="onLoadKakaoMap">
                 <KakaoMapMarker
-                    v-for="(marker, idx) in markerList"
+                    v-for="(marker, idx) in markerInfoList"
                     :key="idx"
                     :lat="marker.lat"
                     :lng="marker.lng"
@@ -14,134 +14,126 @@
                     @onClickKakaoMapMarker="onClickKakaoMapMarker(idx)"
                 />
                 <KakaoMapCustomOverlay
-                    v-for="(marker, idx) in markerList"
+                    v-for="(marker, idx) in markerInfoList"
                     :key="idx"
                     :lat="marker.lat"
                     :lng="marker.lng"
                     :yAnchor="1.4"
                     :visible="overlayStates[idx]"
                 >
-                        <div
-                            id="kakao-map-custom-overlay"
-                            style="
-                                padding: 10px;
-                                background-color: white;
-                                border: 1px solid #ccc;
-                                border-radius: 5px;
-                                display: flex;
-                                flex-direction: column;
-                                align-items: flex-start;
-                            "
-                            @click="openModal"
-                        >
-                            <div style="font-weight: bold; margin-bottom: 5px; display: flex">
-                                카페 카카오
-                                <div
-                                    style="
-                                        position: absolute;
-                                        top: 10px;
-                                        right: 10px;
-                                        color: #888;
-                                        width: 17px;
-                                        height: 17px;
-                                        background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/overlay_close.png');
-                                    "
-                                    @click="closeOverlay(idx, $event)"
-                                    title="닫기"
-                                ></div>
+                    <div
+                        id="kakao-map-custom-overlay"
+                        style="
+                            padding: 10px;
+                            background-color: white;
+                            border: 1px solid #ccc;
+                            border-radius: 5px;
+                            display: flex;
+                            flex-direction: column;
+                            align-items: flex-start;
+                        "
+                        @click="checkoutToJobPost(marker.announcementId)"
+                    >
+                        <div style="font-weight: bold; margin-bottom: 5px; display: flex">
+                            {{ marker.title }}
+                            <div
+                                style="
+                                    position: absolute;
+                                    top: 10px;
+                                    right: 10px;
+                                    color: #888;
+                                    width: 17px;
+                                    height: 17px;
+                                    background: url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/overlay_close.png');
+                                "
+                                @click="closeOverlay(idx, $event)"
+                                title="닫기"
+                            ></div>
+                        </div>
+                        <div style="display: flex">
+                            <div style="margin-right: 10px">
+                                <img
+                                    src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/thumnail.png"
+                                    width="73"
+                                    height="70"
+                                />
                             </div>
-                            <div style="display: flex">
-                                <div style="margin-right: 10px">
-                                    <img
-                                        src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/thumnail.png"
-                                        width="73"
-                                        height="70"
-                                    />
+                            <div style="display: flex; flex-direction: column; align-items: flex-start">
+                                <div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap">
+                                    {{ marker.contents }}
                                 </div>
-                                <div style="display: flex; flex-direction: column; align-items: flex-start">
-                                    <div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap">
-                                        카페 파트타임
-                                    </div>
-                                    <div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap">
-                                        11:00 ~ 13:00
-                                    </div>
-                                    <div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap">
-                                        시급: 10,000 원
-                                    </div>
+                                <div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap">
+                                    {{ marker.startWorkTime.slice(0, 5) }} ~ {{ marker.endWorkTime.slice(0, 5) }}
+                                </div>
+                                <div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap">
+                                    일당: {{ marker.salary * 1000 }} 원
                                 </div>
                             </div>
                         </div>
+                    </div>
                 </KakaoMapCustomOverlay>
             </KakaoMap>
         </div>
     </div>
-    <ModalCompo :isOpen="isModalOpened" @modal-close="closeModal" @submit="submitHandler">
-        <template #header>Custom header</template>
-        <template #content>Custom content</template>
-        <template #footer>Custom content</template>
-    </ModalCompo>
 </template>
 
 <script setup>
 import axios from 'axios';
 import { ref, onMounted } from 'vue';
-import { KakaoMap, KakaoMapMarker, KakaoMapCustomOverlay } from 'vue3-kakao-maps';
-import ModalCompo from './ModalCompo.vue';
+import { useRouter } from 'vue-router';
 import markerImageSrc from '../../assets/images/red_dot.png';
+import { KakaoMap, KakaoMapMarker, KakaoMapCustomOverlay } from 'vue3-kakao-maps';
+
+const router = useRouter();
 
 const kakaoMapRef = ref(null);
 
-const markerList = ref([]);
+const markerInfoList = ref([]);
 
 const coordinate = ref({
     lat: 0,
     lng: 0,
 });
 
-const fetchMarkerList = () => {
-    // 전체 마커 조회
-    // try {
-    //     axios.get('http://localhost:8080/query/bizannouncement/select/all')
-    //         .then(response => {
-    //             const data = response.data;
-    //             if (data === null) {
-    //                 throw new Error("Data Not Found");
-    //             }
-    //             data.map(el => {
-    //                 markerList.value.push({ lat: el.work_pos_latitude, lng: el.work_pos_longitude })
-    //             })
-    //         })
-    //         .catch(err => {
-    //             // TODO: 커밋할 때 삭제하기
-    //             // console.log('failed')
-    //             // console.log(JSON.stringify(err))
-    //         });
-    // } catch (e) {
-    //     console.log(e);
-    // }
+const overlayStates = ref([]);
 
+const isModalOpened = ref(false);
+
+const fetchMarkerList = () => {
     try {
-        axios.get('http://localhost:8080/location', {
-            params: {
-                latitude: coordinate.value.lat,
-                longitude: coordinate.value.lng,
-                radius: 5.0,
-            },
-            // withCredentials: true
-        })
-            .then(response => {
-                console.log(JSON.stringify(response));
-                // if (data === null) {
-                //     throw new Error("Data Not Found");
-                // }
-                // data.map(el => {
-                //     markerList.value.push({ lat: el.work_pos_latitude, lng: el.work_pos_longitude })
-                // })
+        axios
+            .get('http://localhost:8080/location', {
+                params: {
+                    latitude: coordinate.value.lat,
+                    longitude: coordinate.value.lng,
+                    radius: 1.0,
+                },
+                // withCredentials: true
             })
-            .catch(err => {
+            .then((response) => {
+                console.log(JSON.stringify(response));
+                const data = response.data.markerInfoList;
+                if (data.length === 0) {
+                    throw new Error('Data Not Found');
+                }
+                data.map((el) => {
+                    markerInfoList.value.push({
+                        announcementId: el.announcementId,
+                        title: el.title,
+                        contents: el.contents,
+                        salary: el.salary,
+                        dayOfWork: el.dayOfWork,
+                        startWorkTime: el.startWorkTime,
+                        endWorkTime: el.endWorkTime,
+                        lat: el.latitude,
+                        lng: el.longitude,
+                    });
+                });
+            })
+            .catch((err) => {
                 // TODO: 커밋할 때 삭제하기
-                console.log('failed')
-                console.log(JSON.stringify(err))
+                console.log('failed');
+                console.log(err);
             });
     } catch (e) {
         console.log(e);
@@ -154,9 +146,9 @@ const getLocation = () => {
 
         console.log(`클릭한 위치의 위도는 ${latlng.getLat()} 이고,`);
         console.log(`경도는 ${latlng.getLng()} 입니다`);
-        console.log(JSON.stringify(markerList.value));
+        console.log(JSON.stringify(markerInfoList.value));
     });
-}
+};
 
 const onLoadKakaoMap = (mapRef) => {
     kakaoMapRef.value = mapRef;
@@ -164,28 +156,28 @@ const onLoadKakaoMap = (mapRef) => {
 };
 
 const createMarkerImage = () => {
-    const imageSize = new kakao.maps.Size(25, 25)
-    const imageOptions = {  
-                shape: 'circle',
-                spriteOrigin: new kakao.maps.Point(0, 0),
-                spriteSize: new kakao.maps.Size(25, 25),
-            };
+    const imageSize = new kakao.maps.Size(25, 25);
+    const imageOptions = {
+        shape: 'circle',
+        spriteOrigin: new kakao.maps.Point(0, 0),
+        spriteSize: new kakao.maps.Size(25, 25),
+    };
     const markerImage = new kakao.maps.MarkerImage(markerImageSrc, imageSize, imageOptions);
     return markerImage;
-}
+};
 
 const createMarker = () => {
     const marker = new kakao.maps.Marker({
         position: new kakao.maps.LatLng(coordinate.value.lat, coordinate.value.lng),
         image: createMarkerImage(),
     });
-    
-    return marker; 
-}
+
+    return marker;
+};
 
 const setCurrentLocationMarker = () => {
     createMarker().setMap(kakaoMapRef.value);
-}
+};
 
 const getCurrentPositionPromise = () => {
     return new Promise((resolve, reject) => {
@@ -198,7 +190,7 @@ const getCurrentPositionPromise = () => {
                     console.error(error);
                     alert('위치 정보를 가져올 수 없습니다.');
                     reject(error);
-                }
+                },
             );
         } else {
             alert('브라우저가 Geolocation을 지원하지 않습니다.');
@@ -212,7 +204,7 @@ const setCurrentPosition = async () => {
         const position = await getCurrentPositionPromise();
         coordinate.value.lat = position.coords.latitude;
         coordinate.value.lng = position.coords.longitude;
-        console.log(coordinate.value.lat, coordinate.value.lng)
+        console.log(coordinate.value.lat, coordinate.value.lng);
     } catch (error) {
         console.error('Failed to get the position:', error);
     }
@@ -223,15 +215,13 @@ onMounted(async () => {
 
     fetchMarkerList();
 
-    overlayStates.value = markerList.value.map(() => false);
+    overlayStates.value = markerInfoList.value.map(() => false);
 });
 
-const overlayStates = ref([]);
-
-const isModalOpened = ref(false);
-
-const openModal = () => {
-    isModalOpened.value = true;
+const checkoutToJobPost = (index) => {
+    if (confirm('공고 상세 페이지로 이동합니다.')) {
+        router.push(`/job/post/${index}`);
+    }
 };
 const closeModal = () => {
     isModalOpened.value = false;
@@ -244,17 +234,6 @@ const toggleOverlay = (index) => {
 const closeOverlay = (index, event) => {
     event.stopPropagation();
     overlayStates.value[index] = false;
-};
-
-const submitHandler = () => {};
-
-const filterBtnClick = () => {
-};
-
-const addMarker = (marker) => {
-    const lat = marker.lat;
-    const lng = marker.lng;
-    markerList.value.push({ lat, lng });
 };
 
 const onClickKakaoMapMarker = (index) => {

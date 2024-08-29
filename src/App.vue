@@ -10,12 +10,6 @@ export default {
 };
 </script>
 
-<template>
-    <header-compo />
-    <middl-compo />
-    <footer-compo />
-</template>
-
 <style>
 @import url('/src/assets/KBC/base.css');
 #app {
