@@ -75,6 +75,20 @@ export default {
             const userData = this.getUser;
             console.log('User data from Vuex:', userData);
             this.userInfo = userData;
+
+            if (!userData) {
+                console.log('비로그인 상태');
+                return null;
+            }
+
+            if ('nick_name' in userData) {
+                // alert('구직자입니다.');
+                this.userRole = 1;
+            }
+            else if('bizname' in userData) {
+                // alert('사업자입니다.');
+                this.userRole = 2;
+            }
             return userData;
         },
     },

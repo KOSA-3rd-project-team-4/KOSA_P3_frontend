@@ -1,8 +1,8 @@
 <template>
 <div>
     <header-compo></header-compo>
-    <div id="posts-background">
-    <!-- <div v-if="user" id="posts-background"> -->
+    <!-- <div id="posts-background"> -->
+    <div v-if="user" id="posts-background">
         <div id="posts-block">
             <div id="posts-header">
                 <div id="posts-header-content">
@@ -90,6 +90,20 @@ export default {
             const userData = this.getUser;
             console.log('User data from Vuex:', userData);
             this.userInfo = userData;
+            
+            if (!userData) {
+                console.log('비로그인 상태');
+                return null;
+            }
+
+            if ('nick_name' in userData) {
+                // alert('구직자입니다.');
+                this.userRole = 1;
+            }
+            else if('bizname' in userData) {
+                // alert('사업자입니다.');
+                this.userRole = 2;
+            }
             return userData;
         }, 
     },
@@ -150,6 +164,7 @@ export default {
             filtername: '20대',
 
             userInfo: '',
+            userRole: 1, // 1이면 구직자, 2이면 사업자
         };
     },
     mounted() {
