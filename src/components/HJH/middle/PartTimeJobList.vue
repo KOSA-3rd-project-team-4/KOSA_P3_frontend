@@ -97,6 +97,20 @@ export default {
         selectOption(option) {
             this.selectedOption = option;
             this.showDropdown = false;
+            this.sortData();
+        },
+        sortData() {
+            if (this.selectedOption === '최신순') {
+                this.init_listData.sort((a, b) => b.announcement_id - a.announcement_id);
+            } else if (this.selectedOption === '가격순') {
+                this.init_listData.sort((a, b) => b.salary - a.salary);
+            } else if (this.selectedOption === '거리순') {
+                this.init_listData.sort((a, b) => {
+                    // 거리순 정렬 로직 추가 (예: location_description에 대한 임의의 거리 값 사용)
+                    // 이 부분은 실제 거리 계산 로직에 따라 다르게 구현될 수 있음
+                    return a.location_description.localeCompare(b.location_description);
+                });
+            }
         },
         handleClick(announcement_id) {
             // alert(`Selected Announcement ID: ${announcement_id}`);
@@ -127,7 +141,7 @@ export default {
           axios.get('http://localhost:8080/query/view/announcements/select/all')
             .then(response => {
                 this.init_listData = response.data.map(item => ({
-                    announcement_id: 1,
+                    announcement_id: item.announcement_id || 1,
                     company_name: item.bizname || '삼성',
                     image_url: item.image_url || 'image_path_samsung',
                     is_favorate: true, // 이거 아직 추가 안했다..
@@ -137,6 +151,7 @@ export default {
                     salary: item.salary || 100000,
                 }));
                 console.log(this.init_listData);
+                this.sortData();
             })
             .catch(error => {
               console.error("There was an error fetching the data:", error);
