@@ -5,13 +5,14 @@ import axios from 'axios';
 const store = createStore({
     state: {
         users: [],
-        user: '',
+        user: null,
         loginType: null
     },
     mutations: {
         setUser(state, user) {
-            state.user = user;
-            console.log(state.user)
+            console.log('Setting user:', user);
+            state.user = { ...user };
+            console.log('State after setting user:', state.user);
         },
         clearUser(state) {
             state.user = null;

@@ -77,34 +77,53 @@ export default {
       roadAddressDetail: '',
       businessPhone: '',
       isModalOpen: false,
+      latitude: null,
+      longitude: null,
     };
   },
   methods: {
-    register() {
-    if (this.password !== this.confirmPassword) {
-      alert('비밀번호가 일치하지 않습니다.');
-      return;
-    }
+    async register() {
+      if (this.password !== this.confirmPassword) {
+        alert('비밀번호가 일치하지 않습니다.');
+        return;
+      }
 
-    const memberData = {
-      username: this.username,
-      password: this.password,
-      email: this.email,
-      bizrno: this.businessNumber,
-      bizname: this.businessName,
-      address: `${this.roadAddress} ${this.roadAddressDetail}`,
-      call_number: this.businessPhone,
-    };
-    console.log(memberData);
-    axios.post('http://localhost:8080/api/register', memberData)
-      .then(() => {
-        alert('회원가입이 완료되었습니다.');
-        this.$router.push('/login');
-      })
-      .catch(err => {
-        alert('회원가입에 실패했습니다: ' + err.message);
-      });
-  },
+      // 주소로부터 위도와 경도 얻기
+      const fullAddress = `${this.roadAddress} ${this.roadAddressDetail}`;
+      try {
+        console.log(fullAddress);
+        const location = await this.getLocation(fullAddress);
+        console.log(location);
+        this.latitude = location.lat;
+        this.longitude = location.lng;
+      } catch (error) {
+        alert('주소로부터 좌표를 얻는 데 실패했습니다.');
+        return;
+      }
+
+      const memberData = {
+        username: this.username,
+        password: this.password,
+        email: this.email,
+        bizrno: this.businessNumber,
+        bizname: this.businessName,
+        address: fullAddress,
+        base_latitude: this.latitude,
+        base_longitude: this.longitude,
+        call_number: this.businessPhone,
+      };
+      
+      console.log(memberData);
+      
+      axios.post('http://localhost:8080/api/register', memberData)
+        .then(() => {
+          alert('회원가입이 완료되었습니다.');
+          this.$router.push('/login');
+        })
+        .catch(err => {
+          alert('회원가입에 실패했습니다: ' + err.message);
+        });
+    },
     lookupBusinessNumber() {
       this.businessNumber = this.businessNumber.replace(/[^0-9]/g, "");
 
@@ -152,10 +171,27 @@ export default {
     },
     closeModal() {
       this.isModalOpen = false;
+    },
+    async getLocation(address) {
+      const API_KEY = 'AIzaSyC878cvWCXmWXK1_dUREveR5MF_x4TKqW8';  // 여기에 구글 API 키를 입력하세요
+      const response = await axios.get(
+        `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${API_KEY}`
+      );
+      
+      const data = response.data;
+      console.log(data);
+      
+      if (!data || data.status === "ZERO_RESULTS") {
+        throw new Error('주소로부터 위치를 찾을 수 없습니다.');
+      }
+      
+      const locationData = data.results[0].geometry.location;
+      return locationData;
     }
   }
 };
 </script>
+
 
 <style scoped>
   @import url('/src/assets/signup.css');
