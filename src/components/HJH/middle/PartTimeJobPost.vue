@@ -145,6 +145,7 @@
         is_biz_member: true,
 
         userInfo: '',
+        userRole: 1, // 1이면 구직자, 2이면 사업자
       };
     },
     methods: {

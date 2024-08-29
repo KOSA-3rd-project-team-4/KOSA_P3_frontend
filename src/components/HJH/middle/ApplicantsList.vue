@@ -159,6 +159,7 @@ export default {
             options: ['전체 보기', '공고 1', '공고 2', '공고 3'], // 드롭다운 옵션 목록
 
             userInfo: '',
+            userRole: 1, // 1이면 구직자, 2이면 사업자
         };
     },
     methods: {
