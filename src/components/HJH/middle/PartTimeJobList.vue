@@ -6,7 +6,7 @@
         <div id="posts-block">
             <div id="posts-header">
                 <div id="posts-header-content">
-                    <div id="post-header-title">{{ category }} 공고 리스트</div>
+                    <div id="post-header-title">{{ filtername }} 공고 리스트</div>
                     <div id="post-header-filter">
                         <div id="board-options">
                             <div id="board-options-content">
@@ -89,11 +89,9 @@ export default {
         user() {
             const userData = this.getUser;
             console.log('User data from Vuex:', userData);
+            this.userInfo = userData;
             return userData;
         }, 
-        category() {
-            return this.$route.params.category;
-        },
     },
     async created() {
       const loginType = this.$store.getters.getLoginType;
@@ -149,11 +147,14 @@ export default {
             showDropdown: false,
             selectedOption: '최신순',
             options: ['최신순', '가격순', '거리순'],
+            filtername: '20대',
+
+            userInfo: '',
         };
     },
     mounted() {
           // 컴포넌트가 마운트될 때 데이터베이스에서 데이터 가져오기
-          axios.get('http://localhost:8080/query/view/announcements/select/all')
+        axios.get('http://localhost:8080/query/view/announcements/select/all')
             .then(response => {
                 this.init_listData = response.data.map(item => ({
                     announcement_id: item.announcement_id || 1,
@@ -170,6 +171,16 @@ export default {
             })
             .catch(error => {
               console.error("There was an error fetching the data:", error);
+            });
+
+        axios.get('http://localhost:8080/query/filteringtags/select/' + this.$route.params.category)
+            .then(response => {
+                const data = response.data;
+                console.log(data.tag_name); // 필터 이름
+                this.filtername = data.tag_name;
+            })
+            .catch(error => {
+                console.error("There was an error fetching the data:", error);
             })
     },
 };

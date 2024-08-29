@@ -94,6 +94,7 @@
       user() {
         const userData = this.getUser;
         console.log('User data from Vuex:', userData);
+        this.userInfo = userData;
         return userData;
       },
       // ...mapState({
@@ -128,6 +129,8 @@
           소프트웨어 개발 모범 사례에 대한 깊은 이해를 가진 분을 기대합니다.
         `,
         is_biz_member: true,
+
+        userInfo: '',
       };
     },
     methods: {

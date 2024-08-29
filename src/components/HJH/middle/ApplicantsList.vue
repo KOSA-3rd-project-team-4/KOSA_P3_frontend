@@ -105,6 +105,7 @@ export default {
         user() {
             const userData = this.getUser;
             console.log('User data from Vuex:', userData);
+            this.userInfo = userData;
             return userData;
         },
         applicant_id() {
@@ -142,6 +143,8 @@ export default {
             showDropdown: false, // 드롭다운 표시 여부
             selectedOption: '전체 보기', // 선택된 옵션
             options: ['전체 보기', '공고 1', '공고 2', '공고 3'], // 드롭다운 옵션 목록
+
+            userInfo: '',
         };
     },
     methods: {

@@ -74,6 +74,7 @@ export default {
         user() {
             const userData = this.getUser;
             console.log('User data from Vuex:', userData);
+            this.userInfo = userData;
             return userData;
         },
     },
@@ -94,6 +95,8 @@ export default {
             inputedUsername: '',
             participatedUsername: '',
             messages: [],
+
+            userInfo: '',
         };
     },
     mounted() {
