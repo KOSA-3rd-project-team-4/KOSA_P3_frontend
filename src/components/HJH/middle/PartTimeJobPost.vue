@@ -214,6 +214,7 @@
     justify-content: space-between;
     align-items: center;
     /* border: 1px solid #ccc; */
+    padding: 10px 15px;
   }
 
   #post-overview,
