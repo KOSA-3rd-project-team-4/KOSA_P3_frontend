@@ -1,5 +1,6 @@
 <template>
     <div id="app-content">
+    <!-- <div v-if="user" id="app-content"> -->
         <div id="app">
             <div id="chat-title">
                 <div id="chat-title-content">
@@ -51,11 +52,25 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import axios from 'axios';
 import Stomp from 'stompjs';
 import SockJS from 'sockjs-client';
 
 export default {
+    name: 'ChatApply',
+    components: {},
+    computed: {
+        chat_id() {
+            return this.$route.params.chat_id;
+        },
+        ...mapGetters(['getUser']),
+        user() {
+            const userData = this.getUser;
+            console.log('User data from Vuex:', userData);
+            return userData;
+        },
+    },
     data() {
         return {
             ws: null,
@@ -64,11 +79,6 @@ export default {
             participatedUsername: '',
             messages: [],
         };
-    },
-    computed: {
-        chat_id() {
-            return this.$route.params.chat_id;
-        },
     },
     mounted() {
         this.setupWebSocket();

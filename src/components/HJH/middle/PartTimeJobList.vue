@@ -1,6 +1,6 @@
 <template>
-    <div id="posts-background">
-    <!-- <div v-if="user" id="posts-background"> -->
+    <!-- <div id="posts-background"> -->
+    <div v-if="user" id="posts-background">
         <div id="posts-block">
             <div id="posts-header">
                 <div id="posts-header-content">

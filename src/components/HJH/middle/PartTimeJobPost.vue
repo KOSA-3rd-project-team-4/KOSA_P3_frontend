@@ -1,6 +1,6 @@
 <template>
-    <!-- <div id="post-background"> -->
-    <div v-if="user" id="post-background">
+    <div id="post-background">
+    <!-- <div v-if="user" id="post-background"> -->
       <div id="post-block">
         <!-- Post Overview -->
         <div id="post-overview">
@@ -77,11 +77,23 @@
   </template>
   
   <script>
-  import { mapState } from 'vuex';
   import { mapGetters } from 'vuex';
   import axios from 'axios';
   
   export default {
+    name: 'JobPost',
+    components: {},
+    computed: {
+      ...mapGetters(['getUser']),
+      user() {
+        const userData = this.getUser;
+        console.log('User data from Vuex:', userData);
+        return userData;
+      },
+      // ...mapState({
+      //   user: state => state.users,
+      // }),
+    },
     data() {
       return {
         title: '소프트웨어 엔지니어',
@@ -101,17 +113,6 @@
         `,
         is_biz_member: true,
       };
-    },
-    computed: {
-      ...mapGetters(['getUser']),
-      user() {
-        const userData = this.getUser;
-        console.log('User data from Vuex:', userData);
-        return userData;
-      },
-      ...mapState({
-        user: state => state.users,
-      }),
     },
     methods: {
         handleClick(applicant_id) {

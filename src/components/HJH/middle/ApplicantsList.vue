@@ -1,5 +1,6 @@
 <template>
     <div id="root-applicants">
+    <!-- <div v-if="user" id="root-applicants"> -->
         <div id="post-applicants">
             <div id="board-top">
                 <div id="board-title">
@@ -87,9 +88,23 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import axios from 'axios';
 
 export default {
+    name: 'Applies',
+    components: {},
+    computed: {
+        ...mapGetters(['getUser']),
+        user() {
+            const userData = this.getUser;
+            console.log('User data from Vuex:', userData);
+            return userData;
+        },
+        applicant_id() {
+            return this.$route.params.applicant_id;
+        },
+    },
     data() {
         return {
             applicants: [
@@ -112,11 +127,6 @@ export default {
             selectedOption: '전체 보기', // 선택된 옵션
             options: ['전체 보기', '공고 1', '공고 2', '공고 3'], // 드롭다운 옵션 목록
         };
-    },
-    computed: {
-        applicant_id() {
-            return this.$route.params.applicant_id;
-        },
     },
     methods: {
         toggleDropdown() {
