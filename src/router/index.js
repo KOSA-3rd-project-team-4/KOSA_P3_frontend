@@ -3,7 +3,7 @@ import LoginPage from '../components/PJH/LoginPage.vue';
 import SignUpPage from '../components/PJH/SignUpPage.vue';
 import MainPage from '../components/KBC/MainPage.vue';
 import CardView from '../components/KBC/middle/CardView.vue';
-import MapView from '../components/KBC/middle/MapView.vue';
+import KakaoMap from '../components/SJA/KakaoMap.vue';
 import JobList from '../components/KBC/middle/JobList.vue';
 import ResumeList from '../components/KBC/resume/ResumeList.vue';
 
@@ -15,6 +15,7 @@ import ChatApply from '../components/HJH/middle/ChatApply.vue';
 import NotFound from '../components/PJH/404ErrorPage.vue';
 import ServerError from '../components/PJH/500ErrorPage.vue';
 import ResumeDetail from '../components/KBC/resume/ResumeDetail.vue';
+
 import Chat from '../components/HJH/middle/Chat.vue';
 import Editor from '../components/HJH/middle/Editor.vue';
 import PostEditor from '../components/HJH/PostEditor.vue';
@@ -33,7 +34,7 @@ const routes = [
             {
                 path: 'map',
                 name: 'MapView',
-                component: MapView,
+                component: KakaoMap,
             },
         ],
     },
