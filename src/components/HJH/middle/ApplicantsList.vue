@@ -149,13 +149,36 @@ export default {
                 } catch (error) {
                     console.error('Error:', error);
                 }
+                
+                const createUrl = `http://localhost:8080/query/contractchatrooms/insert`
+
+                const createData = {
+                    apply_id: apply_id,
+                    room_opening_time: null,
+                }
+
+                try {
+                    const createResponse = await axios.post(createUrl, createData);
+                } catch (error) {
+                    console.error('Error:', error);
+                }
+
             }
 
-            this.$router.push({ name: 'ChatApply', params: { chat_id: apply_id } });
+            const getRoomUrl = `http://localhost:8080/query/contractchatrooms/select/${apply_id}`
+            try {
+                const getRoomResponse = await axios.get(getRoomUrl);
+                if (getRoomResponse.status == 200 || 201 || 202 || 203 || 204) {
+
+                    this.$router.push({ name: 'ChatApply', params: { chat_id: apply_id } });
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
         },
         async rejectApply(apply_id, member_id, user_hired) {
             // 지원을 거절합니다.
-            alert(`채용 거절, 선택된 apply_id: ${apply_id}, member_id: ${member_id}`);
+            // alert(`채용 거절, 선택된 apply_id: ${apply_id}, member_id: ${member_id}`);
             
             // applies 컬럼 user_hired 채용 거절값 -1로 변경
             const url = `http://localhost:8080/query/applies/update/hired/-1/${apply_id}`;
@@ -442,7 +465,7 @@ h1 {
 }
 
 .applicant-right {
-    width: 21%;
+    width: 24%;
     right: 0;
     min-width: 100px;
     /* background-color: #e7e7e7; */
