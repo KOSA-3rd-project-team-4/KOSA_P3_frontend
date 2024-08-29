@@ -1,9 +1,4 @@
 <template>
-    <!-- <div id="test-board">
-        <input type="text" v-model="inputedUsername" placeholder="참여한 유저 이름을 작성" />
-        <button @click="Init">참여한 유저 이름</button>
-    </div> -->
-
     <div id="app-content">
         <div id="app">
             <div id="chat-title">
@@ -17,37 +12,22 @@
                     </div>
 
                     <div id="chat-title-content-right"></div>
-                    <!-- 뭐넣지-->
                 </div>
             </div>
             <div id="chat-sidebar">
                 <div id="chat-sidebar-content">
-                    <!-- TODO 0829 채팅중에 내가 사업자면, 여기에 채용 버튼 만들기-->
-                    <!-- TODO 0829 채팅 언제든, 내가 구직자면, 채용 확정시 여기에 표시해주기-->
-                    <!-- <div class="chat-sidebar-icons">
-                        <button>
-                            <img src="/src/assets/HJH/phone.png" alt="" srcset="" />
-                        </button>
-                    </div>
-                    <div class="chat-sidebar-icons">
-                        <button>
-                            <img src="/src/assets/HJH/money.png" alt="" srcset="" />
-                        </button>
-                    </div> -->
                 </div>
             </div>
             <div id="chat-content" ref="chatContent">
-                <!-- 여기에 채팅 내용이 올라와야 합니다.-->
                 <div v-for="(message, index) in messages" :key="index" class="chat-message">
                     <div class="chat-block">
-                        <!-- id='me'로 컨트롤 -->
-                        <div v-if="message.sent_by_biz_member_id === 1" class="chat-content" style="margin-left: auto">
-                            <div class="chat-username">{{ message.user }}</div>
-                            {{ message.text }}
+                        <div v-if="message.sent_by_member_id === 1" class="chat-content" style="margin-left: auto">
+                            <div class="chat-username">{{ message.sender_name }}</div>
+                            {{ message.content }}
                         </div>
                         <div v-else class="chat-content" style="margin-right: auto">
-                            <div class="chat-username">{{ message.user }}</div>
-                            {{ message.text }}
+                            <div class="chat-username">{{ message.sender_name }}</div>
+                            {{ message.content }}
                         </div>
                     </div>
                 </div>
@@ -55,9 +35,8 @@
 
             <div id="chat-control">
                 <div id="chat-control-content">
-                    <!-- <textarea name="" id=""></textarea> -->
                     <textarea
-                        v-model="newMessage"
+                        v-model="inputMessage"
                         @input="autoResize"
                         @keyup.enter="sendMessage"
                         placeholder="Type your message here..."
@@ -73,17 +52,17 @@
 
 <script>
 import axios from 'axios';
+import Stomp from 'stompjs';
+import SockJS from 'sockjs-client';
 
 export default {
     data() {
         return {
-            // TODO DATA: 현재 입장한
-            inputedUsername: '', // 새 사용자를 입력받음
-            participatedUsername: '', // 참석한 사용자 이름
-            newMessage: '', // 새로운 메시지 입력 필드의 값
-            messages: [
-                // 채팅 메시지들을 저장하는 배열
-            ],
+            ws: null,
+            inputMessage: '',
+            inputedUsername: '',
+            participatedUsername: '',
+            messages: [],
         };
     },
     computed: {
@@ -92,96 +71,101 @@ export default {
         },
     },
     mounted() {
+        this.setupWebSocket();
+
         axios
             .get('http://localhost:8080/query/view/chat/select/' + this.$route.params.chat_id)
             .then((response) => {
-                // 서버에서 받아온 데이터로 applicants 배열 업데이트
-                console.log(response.data);
                 const data = response.data;
-                // this.applicants = response.data.map((item) => ({
-                //     image_url: item.image_url || 'default.jpg', // 썸네일 이미지 경로 (기본값 포함)
-                //     userprofile: item.userprofile || '지원자 타이틀', // 지원자 타이틀
-
-                //     apply_id: item.apply_id,
-                //     member_id: item.member_id,
-                //     announcement_id: item.announcement_id,
-
-                //     announcement: item.announcement,
-                //     nick_name: item.nick_name,
-                //     apply_date: item.apply_date,
-                //     chat_created: item.chat_created,
-                //     user_hired: item.user_hired,
-                // }));
                 this.messages = data.map((item) => ({
-                    user: item.sender_name,
-                    text: item.content,
-                    sent_by_biz_member_id: item.sent_by_biz_member_id,
+                    chat_log_id: item.chat_log_id,
+                    contract_chat_id: item.contract_chat_id,
+                    sender_name: item.sender_name,
+                    content: item.content,
+                    chat_time: item.chat_time,
                     sent_by_member_id: item.sent_by_member_id,
+                    sent_by_biz_member_id: item.sent_by_biz_member_id,
                 }));
-                // console.log(this.applicants);
+
+                // TODO 0829: 임시로 보내는 사람의 이름을 sender_name으로 한다.
+                this.messages.forEach((item) => {
+                    this.participatedUsername = item.sender_name;
+                })
+
+                this.$nextTick(() => {
+                    this.scrollToBottom();
+                });
             })
             .catch((error) => {
-                console.error('There was an error fetching the applicants data:', error);
+                console.error('There was an error fetching the chat data:', error);
             });
     },
     methods: {
-        // Init: 채팅방 입장시 입장한 유저 이름을 전달해야 합니다.
-        Init() {
-            if (this.inputedUsername.trim() !== '') {
-                // TODO 0829 user 값을 입력받아야 함
-                this.participatedUsername = this.inputedUsername; // user 값을 새로운 이름으로 변경
-                console.log('Username changed to: ${this.user}');
-
-                this.messages = [
-                    {
-                        user: 'me',
-                        text: '안녕하세요',
-                    },
-                    {
-                        user: '지원자',
-                        text: '안녕하십니까 :)',
-                    },
-                    {
-                        user: 'me',
-                        text: '공고 조건 괜찮으신가요? 결격사유 문제 없으신거죠?',
-                    },
-                ];
-            }
-        },
         autoResize() {
             const textarea = this.$refs.textarea;
-            textarea.style.height = 'auto'; // 높이를 초기화하여 스크롤 높이를 올바르게 계산
-            textarea.style.height = `${textarea.scrollHeight}px`; // scrollHeight에 맞춰 높이 조정
+            textarea.style.height = 'auto';
+            textarea.style.height = `${textarea.scrollHeight}px`;
         },
         sendMessage() {
-            console.log(this.newMessae);
-            if (this.newMessage.trim() !== '') {
-                // 메시지를 할당합니다.
+            console.log(this);
+            if (this.inputMessage.trim() !== '') {
+                const message = {
+                    chat_log_id: null, // 새 메시지이므로 null로 설정
+                    contract_chat_id: this.chat_id, // 현재 채팅의 계약 ID
+                    sender_name: this.participatedUsername || 'Unknown', // 사용자의 이름
+                    content: this.inputMessage, // 사용자가 입력한 메시지
+                    chat_time: new Date().toISOString(), // 현재 시간을 포함
+                    sent_by_member_id: 1, // 현재 사용자의 ID
+                    sent_by_biz_member_id: null, // 필요에 따라 설정
+                };
+
+                this.ws.send(JSON.stringify(message));
+                this.inputMessage = '';
+            }
+        },
+        setupWebSocket() {
+            this.ws = new WebSocket('ws://localhost:8081');
+  
+            this.ws.onmessage = (event) => {
+                let messageData;
+                try {
+                    messageData = JSON.parse(event.data);
+                } catch (error) {
+                    console.error("Failed to parse message data:", error);
+                    return;
+                }
+
                 this.messages.push({
-                    user: this.participatedUsername,
-                    text: this.newMessage,
+                    chat_log_id: messageData.chat_log_id,
+                    contract_chat_id: messageData.contract_chat_id,
+                    sender_name: messageData.sender_name,
+                    content: messageData.content,
+                    chat_time: messageData.chat_time,
+                    sent_by_member_id: messageData.sent_by_member_id,
+                    sent_by_biz_member_id: messageData.sent_by_biz_member_id,
                 });
 
-                // 메시지를 초기화합니다.
-                this.newMessage = '';
                 this.$nextTick(() => {
-                    this.scrollToBottom(); // 스크롤을 업데이트합니다.
-                    this.autoResize(); // 사이즈를 조정합니다.
+                    this.scrollToBottom();
                 });
-            }
+            };
+
+            this.ws.onopen = () => {
+                console.log('Connected to WebSocket server');
+            };
+
+            this.ws.onclose = () => {
+                console.log('Disconnected from WebSocket server');
+            };
         },
         scrollToBottom() {
             const chatContent = this.$refs.chatContent;
             chatContent.scrollTop = chatContent.scrollHeight;
         },
-        updated() {
-            this.$nextTick(() => {
-                this.scrollToBottom(); // 메시지가 추가될 때마다 스크롤을 아래로 이동
-            });
-        },
     },
 };
 </script>
+
 
 <style scoped>
 #app-content {

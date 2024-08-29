@@ -15,6 +15,7 @@ import ChatApply from '../components/HJH/middle/ChatApply.vue';
 import NotFound from '../components/PJH/404ErrorPage.vue';
 import ServerError from '../components/PJH/500ErrorPage.vue';
 import ResumeDetail from '../components/KBC/resume/ResumeDetail.vue';
+import Chat from '../components/HJH/middle/Chat.vue';
 
 const routes = [
     {
@@ -69,9 +70,11 @@ const routes = [
         name: 'ChatApply',
         component: ChatApply,
     },
-    // {
-    //     path: '/chat/channel/:'
-    // },
+    {
+        path: '/chat',
+        name: 'Chat',
+        component: Chat,
+    },
     {
         path: '/:pathMatch(.*)*',
         name: 'NotFound',

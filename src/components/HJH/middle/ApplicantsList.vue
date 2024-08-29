@@ -47,33 +47,33 @@
                             <button
                                 v-if="item.chat_created == 1"
                                 class="chat-button"
-                                @click="connectChat(item.apply_id, item.member_id)"
+                                @click="connectChat(item.apply_id, item.member_id, item.chat_created)"
                             >
                                 채팅하기
                             </button>
-                            <button v-else class="chat-button" @click="connectChat(item.apply_id, item.member_id)">
+                            <button v-else class="chat-button" @click="connectChat(item.apply_id, item.member_id, item.chat_created)">
                                 채팅시작
                             </button>
 
                             <button
                                 v-if="item.user_hired == -1"
                                 class="reject-button"
-                                @click="rejectApply(item.apply_id, item.member_id)"
+                                @click="rejectApply(item.apply_id, item.member_id, item.user_hired)"
                                 disabled
                             >
-                                거절완료
+                                거절됨
                             </button>
                             <button
                                 v-else-if="item.user_hired == 0"
                                 class="reject-button"
-                                @click="rejectApply(item.apply_id, item.member_id)"
+                                @click="rejectApply(item.apply_id, item.member_id, item.user_hired)"
                             >
                                 거절하기
                             </button>
                             <button
                                 v-else
                                 class="reject-button"
-                                @click="rejectApply(item.apply_id, item.member_id)"
+                                @click="rejectApply(item.apply_id, item.member_id, item.user_hired)"
                                 style="background-color: cadetblue"
                             >
                                 채용됨
@@ -128,14 +128,51 @@ export default {
             this.selectedOption = option;
             this.showDropdown = false;
         },
-        connectChat(apply_id, member_id) {
+        async connectChat(apply_id, member_id, chat_created) {
+            // console.log(apply_id, member_id, chat_created);
             // 채팅에 연결, 접속합니다.
-            alert(`채팅 시작, 선택된 apply_id: ${apply_id}, member_id: ${member_id}`);
+            // alert(`채팅 시작, 선택된 apply_id: ${apply_id}, member_id: ${member_id}`);
+            
+            if (chat_created != 1) {
+                // 채팅을 시작하면 이 유저의 item.chat_created 값을 1로 변경 (서버로)    
+                const url = `http://localhost:8080/query/applies/update/chat/1/${apply_id}`;
+
+                // PUT 요청으로 보낼 데이터 정의 (필요한 데이터를 여기에 추가)
+                const data = {
+                    chat_created: 0,
+                    apply_id: apply_id, // 필요에 따라 추가
+                };
+
+                try {
+                    const response = await axios.put(url, data);
+                    // alert('Response:', response.data);
+                } catch (error) {
+                    console.error('Error:', error);
+                }
+            }
+
+            this.$router.push({ name: 'ChatApply', params: { chat_id: apply_id } });
         },
-        rejectApply(apply_id, member_id) {
+        async rejectApply(apply_id, member_id, user_hired) {
             // 지원을 거절합니다.
             alert(`채용 거절, 선택된 apply_id: ${apply_id}, member_id: ${member_id}`);
-            // TODO 채용 거절값 -1로 변경
+            
+            // applies 컬럼 user_hired 채용 거절값 -1로 변경
+            const url = `http://localhost:8080/query/applies/update/hired/-1/${apply_id}`;
+
+            // PUT 요청으로 보낼 데이터 정의 (필요한 데이터를 여기에 추가)
+            const data = {
+                user_hired: -1,
+                apply_id: apply_id, // 필요에 따라 추가
+            };
+
+            try {
+                const response = await axios.put(url, data);
+                // alert('Response:', response.data);
+            } catch (error) {
+                console.error('Error:', error);
+            }
+
         },
     },
     mounted() {
