@@ -105,21 +105,12 @@ export default {
         user() {
             const userData = this.getUser;
             console.log('User data from Vuex:', userData);
-            this.userInfo = userData;
 
             if (!userData) {
                 console.log('비로그인 상태');
                 return null;
             }
 
-            if ('nick_name' in userData) {
-                // alert('구직자입니다.');
-                this.userRole = 1;
-            }
-            else if('bizname' in userData) {
-                // alert('사업자입니다.');
-                this.userRole = 2;
-            }
             return userData;
         },
         applicant_id() {
@@ -157,9 +148,6 @@ export default {
             showDropdown: false, // 드롭다운 표시 여부
             selectedOption: '전체 보기', // 선택된 옵션
             options: ['전체 보기', '공고 1', '공고 2', '공고 3'], // 드롭다운 옵션 목록
-
-            userInfo: '',
-            userRole: 1, // 1이면 구직자, 2이면 사업자
         };
     },
     methods: {
