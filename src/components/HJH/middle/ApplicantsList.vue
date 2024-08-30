@@ -253,7 +253,7 @@ export default {
 
         // axios.get('http://localhost:8080/query/view/bizmember/applies/select/' + this.$route.params.applicant_id)
         axios
-            .get('http://localhost:8080/query/view/bizmember/applies/select/' + this.$route.params.applicant_id)
+            .get('http://localhost:8080/query/view/bizmember/applies/select/' + this.$route.params.bizmember_id)
             .then((response) => {
                 // 서버에서 받아온 데이터로 applicants 배열 업데이트
                 console.log(response.data);
