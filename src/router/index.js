@@ -84,7 +84,7 @@ const routes = [
             },
             {
                 path: 'resume/detail/:id',
-                name: 'ResumeDetail',
+                name: 'ResumeUserDetail',
                 component: () => import('../components/YDH/user/resume/ResumeDetail.vue'),
             },
             {

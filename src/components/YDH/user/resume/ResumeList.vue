@@ -65,6 +65,7 @@ export default {
             }
         },
         viewResumeDetail(pr_id) {
+            console.log(pr_id);
             this.$router.push(`/mypage/resume/detail/${pr_id}`);
         },
         fetchResumes() {
