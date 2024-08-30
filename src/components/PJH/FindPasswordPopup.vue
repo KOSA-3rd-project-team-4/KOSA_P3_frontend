@@ -52,7 +52,7 @@ export default {
   methods: {
     async findPassword() {
       try {
-        const response = await axios.post('/query/bizmembers/findPassword', {
+        const response = await axios.post('http://localhost:8080/query/bizmembers/findPassword', {
           username: this.businessId,
           email: this.email
         });
@@ -69,7 +69,7 @@ export default {
     },
     async resetPassword() {
       try {
-        const response = await axios.post('/query/bizmembers/resetPassword', {
+        const response = await axios.post('http://localhost:8080/query/bizmembers/resetPassword', {
           username: this.businessId,
           email: this.email,
           newPassword: this.newPassword
