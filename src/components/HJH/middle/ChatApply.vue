@@ -1,5 +1,8 @@
 <template>
+<div>
+    <header-compo></header-compo>
     <div id="app-content">
+    <!-- <div v-if="user" id="app-content"> -->
         <div id="app">
             <div id="chat-title">
                 <div id="chat-title-content">
@@ -16,12 +19,29 @@
             </div>
             <div id="chat-sidebar">
                 <div id="chat-sidebar-content">
+                    <div v-if="userRole === 1" class="chat-sidebar-icons">
+                        <button v-if="true" class="labels" style="background-color: chartreuse;" disabled>
+                            채용완료
+                        </button>
+                        <button v-else class="labels" style="background-color: khaki;" disabled>
+                            채용중
+                        </button>
+                    </div>
+                    <div v-else-if="userRole === 2" class="chat-sidebar-icons">
+                        <button v-show="isHiredBtn" class="labels" style="background-color: chartreuse;" @click="toggleHired()">
+                            채용완료
+                        </button>
+                        <button v-show="!isHiredBtn" class="labels" style="background-color: khaki;" @click="toggleHired()">
+                            채용중
+                        </button>
+                    </div>
                 </div>
             </div>
             <div id="chat-content" ref="chatContent">
                 <div v-for="(message, index) in messages" :key="index" class="chat-message">
                     <div class="chat-block">
-                        <div v-if="message.sent_by_member_id === 1" class="chat-content" style="margin-left: auto">
+                        
+                        <div v-if="username === message.sender_name" class="chat-content" style="margin-left: auto">
                             <div class="chat-username">{{ message.sender_name }}</div>
                             {{ message.content }}
                         </div>
@@ -48,14 +68,85 @@
             </div>
         </div>
     </div>
+</div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import axios from 'axios';
 import Stomp from 'stompjs';
 import SockJS from 'sockjs-client';
+import HeaderCompo from '../../KBC/layouts/HeaderCompo.vue';
 
 export default {
+    name: 'ChatApply',
+    components: {
+        HeaderCompo,
+    },
+    computed: {
+        chat_id() {
+            return this.$route.params.chat_id;
+        },
+        ...mapGetters(['getUser']),
+        user() {
+            const userData = this.getUser;
+            console.log('User data from Vuex:', userData);
+
+            if (!userData) {
+                console.log('비로그인 상태');
+                return null;
+            }
+
+            return userData;
+        },
+        username() {
+            const _user = this.user;
+
+            if ('nick_name' in _user) {
+                return _user.nick_name;
+            }
+            else if ('bizname' in _user) {
+                return _user.username;
+            }
+            else {
+                return 'defaultUser';
+            }
+        },
+        userID() {
+            const _user = this.user;
+            
+            if ('member_id' in _user) {
+                return _user.member_id;
+            }
+            else if ('bizmember_id' in _user) {
+                return _user.bizmember_id;
+            }
+            else {
+                return 1;
+            }
+        },
+        userRole() {
+            if ('nick_name' in this.user) {
+                return 1;
+            }
+            else if ('bizname' in this.user) {
+                return 2;
+            }
+            else {
+                return 0;
+            }
+        }
+    },
+    async created() {
+      const loginType = this.$store.getters.getLoginType;
+
+      // 로그인 유형에 따라 필요한 경우에만 fetch 호출
+      if (loginType === 'oauth' && !this.$store.getters.isAuthenticated) {
+        await this.$store.dispatch('fetchMemberLogin');
+      } else if (loginType === 'normal' && !this.$store.getters.isAuthenticated) {
+        await this.$store.dispatch('fetchBizLogin');
+      }
+    },
     data() {
         return {
             ws: null,
@@ -63,12 +154,9 @@ export default {
             inputedUsername: '',
             participatedUsername: '',
             messages: [],
+
+            isHiredBtn: false,
         };
-    },
-    computed: {
-        chat_id() {
-            return this.$route.params.chat_id;
-        },
     },
     mounted() {
         this.setupWebSocket();
@@ -77,6 +165,7 @@ export default {
             .get('http://localhost:8080/query/view/chat/select/' + this.$route.params.chat_id)
             .then((response) => {
                 const data = response.data;
+                
                 this.messages = data.map((item) => ({
                     chat_log_id: item.chat_log_id,
                     contract_chat_id: item.contract_chat_id,
@@ -87,10 +176,13 @@ export default {
                     sent_by_biz_member_id: item.sent_by_biz_member_id,
                 }));
 
-                // TODO 0829: 임시로 보내는 사람의 이름을 sender_name으로 한다.
+                // 지원자의 id를 가지고 있는다.
                 this.messages.forEach((item) => {
-                    this.participatedUsername = item.sender_name;
-                })
+                    if (item.sent_by_member_id != null) {
+                        this.applicant_member_id = item.sent_by_member_id;
+                    }
+                    this.contract_chat_id = item.contract_chat_id; // 채팅방 id 갖고옴
+                });
 
                 this.$nextTick(() => {
                     this.scrollToBottom();
@@ -106,18 +198,63 @@ export default {
             textarea.style.height = 'auto';
             textarea.style.height = `${textarea.scrollHeight}px`;
         },
+        toggleHired() {
+            let confirmText = this.isHiredBtn ? '채용 취소하시겠습니까?' : '채용 하시겠습니까?';
+            let confimed = confirm(confirmText);
+
+            if (confimed) {
+                this.isHiredBtn = !this.isHiredBtn;
+
+                let hireState = this.isHiredBtn ? 1 : 0;
+                // 지원자의 id 가져오기
+                // this.applicant_member_id;
+
+                // applies에 있는 user_hired 값을 바꿔야 함
+                // this.contract_chat_id
+                const hireUrl = 'http://localhost:8080/query/view/chat/update/hire/' + this.contract_chat_id + '/' + this.hireState;
+                
+                try {
+                    axios.put(hireUrl);
+                } catch (error) {
+                    console.error('Error:', error);
+                }
+            }
+        },
         sendMessage() {
             console.log(this);
             if (this.inputMessage.trim() !== '') {
+                let userRole = 0;
+                if ('nick_name' in this.user) {
+                    userRole = 1;
+                }
+                else if ('bizname' in this.user) {
+                    userRole = 2;
+                }
+                else {
+                    console.error('비로그인 상태입니다.');
+                }
+
+                let _member_id = null;
+                let _bizmember_id = null;
+                if (userRole === 1 || userRole === 0) {
+                    // 구직자
+                    _member_id = this.userID;
+                }
+                else if (userRole === 2) {
+                    _bizmember_id = this.userID;
+                }
+
                 const message = {
                     chat_log_id: null, // 새 메시지이므로 null로 설정
                     contract_chat_id: this.chat_id, // 현재 채팅의 계약 ID
-                    sender_name: this.participatedUsername || 'Unknown', // 사용자의 이름
-                    content: this.inputMessage, // 사용자가 입력한 메시지
+                    sender_name: this.username, // 사용자의 이름
+                    content: this.inputMessage || 'defaultUser', // 사용자가 입력한 메시지
                     chat_time: new Date().toISOString(), // 현재 시간을 포함
-                    sent_by_member_id: 1, // 현재 사용자의 ID
-                    sent_by_biz_member_id: null, // 필요에 따라 설정
+                    sent_by_member_id: _member_id, // 현재 사용자의 ID
+                    sent_by_biz_member_id: _bizmember_id, // 필요에 따라 설정
                 };
+
+                console.log(message);
 
                 this.ws.send(JSON.stringify(message));
                 this.inputMessage = '';
@@ -173,7 +310,7 @@ export default {
     left: 0;
     top: 0;
     width: 100%;
-    height: 100vh;
+    height: 85vh;
     position: relative;
     /* background-color: rgb(196, 214, 124); */
     align-content: space-around;
@@ -231,6 +368,13 @@ export default {
     height: 40px;
 }
 
+.labels {
+    width: 60px;
+    height: 60px;
+    align-content: center;
+    border-radius: 10px;
+}
+
 /*---------------------------------------------------------------------------------------*/
 
 #chat-sidebar {
@@ -263,6 +407,8 @@ export default {
 .chat-sidebar-icons button {
     padding: 0;
     margin: 0;
+    border-radius: 10px;
+    border: 1px solid;
 }
 
 .chat-sidebar-icons img {
@@ -272,6 +418,7 @@ export default {
     align-self: center;
     display: inline-flex;
     vertical-align: text-top;
+    border-radius: 10px;
 }
 
 /*---------------------------------------------------------------------------------------*/

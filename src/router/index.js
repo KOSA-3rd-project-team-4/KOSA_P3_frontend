@@ -137,7 +137,7 @@ const routes = [
         component: PostEditor,
     },
     {
-        path: '/job/applicant/:applicant_id',
+        path: '/job/applicant/:bizmember_id',
         name: 'ApplicantList',
         component: ApplicantsList,
     },

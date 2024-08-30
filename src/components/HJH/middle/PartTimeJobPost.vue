@@ -1,5 +1,8 @@
 <template>
+  <div>
+    <header-compo></header-compo>
     <div id="post-background">
+    <!-- <div v-if="user" id="post-background"> -->
       <div id="post-block">
         <!-- Post Overview -->
         <div id="post-overview">
@@ -66,20 +69,51 @@
   
         <!-- Post Apply or Applicant List Button -->
         <div id="post-apply" style="text-align: center;">
-          <a v-if="!is_biz_member" href="#" class="apply-button">지금 지원하기</a>
-          <a v-else href="#" class="apply-button" @click="handleClick(1)">지원자 보기</a>
+          <a v-if="'nick_name' in user" href="#" class="apply-button" @click="apply()">지금 지원하기</a>
+          <a v-else-if="'bizname' in user" href="#" class="apply-button" @click="seeAplicants()">지원자 보기</a>
         </div>
   
         <!-- TODO: 사업자일 경우 지원자 목록으로 버튼 추가-->
       </div>
     </div>
-  </template>
+  </div>
+</template>
   
   <script>
-  import { mapState } from 'vuex';
+  import { mapGetters } from 'vuex';
   import axios from 'axios';
+  import HeaderCompo from '../../KBC/layouts/HeaderCompo.vue';
   
   export default {
+    name: 'JobPost',
+    components: {
+      HeaderCompo,
+    },
+    computed: {
+      ...mapGetters(['getUser']),
+      user() {
+        const userData = this.getUser;
+        console.log('User data from Vuex:', userData);
+        this.userInfo = userData;
+
+        if (!userData) {
+            console.log('비로그인 상태');
+            return null;
+        }
+
+        return userData;
+      },
+    },
+    async created() {
+      const loginType = this.$store.getters.getLoginType;
+
+      // 로그인 유형에 따라 필요한 경우에만 fetch 호출
+      if (loginType === 'oauth' && !this.$store.getters.isAuthenticated) {
+        await this.$store.dispatch('fetchMemberLogin');
+      } else if (loginType === 'normal' && !this.$store.getters.isAuthenticated) {
+        await this.$store.dispatch('fetchBizLogin');
+      }
+    },
     data() {
       return {
         title: '소프트웨어 엔지니어',
@@ -98,17 +132,42 @@
           소프트웨어 개발 모범 사례에 대한 깊은 이해를 가진 분을 기대합니다.
         `,
         is_biz_member: true,
+        announcement_id: this.$route.params.announcement_id || 1, // 공고 id
+
+        userInfo: '',
       };
     },
-    computed: {
-      ...mapState({
-        user: state => state.users,
-      }),
-    },
     methods: {
-        handleClick(applicant_id) {
+        apply() {
+          // 지원합니다.
+          // userData가 구직자인 상태
+          const announcement_id = this.announcement_id; // 공고 id 가져오기
+          
+          // 새 지원 생성
+          const insertApplyUrl = 'http://localhost:8080/query/applies/insert';
+          const newApply = {
+            'member_id': this.getUser.member_id, // 멤버 id 가져오기
+            'announcement_id': announcement_id,
+            'chat_created': 0,
+            'user_hired': 0,
+          }
+
+          try {
+            axios.post(insertApplyUrl, newApply)
+              .then(() => {
+                alert('지원되었습니다!');
+              })
+          } catch (error) {
+            console.error('Error:', error);
+          }
+
+        },
+        seeAplicants() {
             // alert(`Selected Announcement ID: ${applicant_id}`);
-            this.$router.push({ name: 'ApplicantList', params: { applicant_id: applicant_id } });
+            const bizmember_id = 1; // TODO 0830 데이터 나중에 아래꺼로 변경
+            // const bizmember_id = this.user.bizmember_id;
+
+            this.$router.push({ name: 'ApplicantList', params: { bizmember_id: bizmember_id } });
         }
     },
     mounted() {
@@ -206,6 +265,7 @@
     justify-content: space-between;
     align-items: center;
     /* border: 1px solid #ccc; */
+    padding: 10px 15px;
   }
 
   #post-overview,

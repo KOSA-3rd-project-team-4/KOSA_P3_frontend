@@ -1,5 +1,8 @@
 <template>
+<div>
+    <header-compo></header-compo>
     <div id="root-applicants">
+    <!-- <div v-if="user" id="root-applicants"> -->
         <div id="post-applicants">
             <div id="board-top">
                 <div id="board-title">
@@ -84,12 +87,46 @@
             </div>
         </div>
     </div>
+</div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import axios from 'axios';
+import HeaderCompo from '../../KBC/layouts/HeaderCompo.vue';
 
 export default {
+    name: 'Applies',
+    components: {
+        HeaderCompo,
+    },
+    computed: {
+        ...mapGetters(['getUser']),
+        user() {
+            const userData = this.getUser;
+            console.log('User data from Vuex:', userData);
+
+            if (!userData) {
+                console.log('비로그인 상태');
+                return null;
+            }
+
+            return userData;
+        },
+        applicant_id() {
+            return this.$route.params.applicant_id;
+        },
+    },
+    async created() {
+      const loginType = this.$store.getters.getLoginType;
+
+      // 로그인 유형에 따라 필요한 경우에만 fetch 호출
+      if (loginType === 'oauth' && !this.$store.getters.isAuthenticated) {
+        await this.$store.dispatch('fetchMemberLogin');
+      } else if (loginType === 'normal' && !this.$store.getters.isAuthenticated) {
+        await this.$store.dispatch('fetchBizLogin');
+      }
+    },
     data() {
         return {
             applicants: [
@@ -112,11 +149,6 @@ export default {
             selectedOption: '전체 보기', // 선택된 옵션
             options: ['전체 보기', '공고 1', '공고 2', '공고 3'], // 드롭다운 옵션 목록
         };
-    },
-    computed: {
-        applicant_id() {
-            return this.$route.params.applicant_id;
-        },
     },
     methods: {
         toggleDropdown() {
@@ -149,13 +181,36 @@ export default {
                 } catch (error) {
                     console.error('Error:', error);
                 }
+                
+                const createUrl = `http://localhost:8080/query/contractchatrooms/insert`
+
+                const createData = {
+                    apply_id: apply_id,
+                    room_opening_time: null,
+                }
+
+                try {
+                    const createResponse = await axios.post(createUrl, createData);
+                } catch (error) {
+                    console.error('Error:', error);
+                }
+
             }
 
-            this.$router.push({ name: 'ChatApply', params: { chat_id: apply_id } });
+            const getRoomUrl = `http://localhost:8080/query/contractchatrooms/select/${apply_id}`
+            try {
+                const getRoomResponse = await axios.get(getRoomUrl);
+                if (getRoomResponse.status == 200 || 201 || 202 || 203 || 204) {
+
+                    this.$router.push({ name: 'ChatApply', params: { chat_id: apply_id } });
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
         },
         async rejectApply(apply_id, member_id, user_hired) {
             // 지원을 거절합니다.
-            alert(`채용 거절, 선택된 apply_id: ${apply_id}, member_id: ${member_id}`);
+            // alert(`채용 거절, 선택된 apply_id: ${apply_id}, member_id: ${member_id}`);
             
             // applies 컬럼 user_hired 채용 거절값 -1로 변경
             const url = `http://localhost:8080/query/applies/update/hired/-1/${apply_id}`;
@@ -186,7 +241,7 @@ export default {
 
         // axios.get('http://localhost:8080/query/view/bizmember/applies/select/' + this.$route.params.applicant_id)
         axios
-            .get('http://localhost:8080/query/view/bizmember/applies/select/' + this.$route.params.applicant_id)
+            .get('http://localhost:8080/query/view/bizmember/applies/select/' + this.$route.params.bizmember_id)
             .then((response) => {
                 // 서버에서 받아온 데이터로 applicants 배열 업데이트
                 console.log(response.data);
@@ -442,7 +497,7 @@ h1 {
 }
 
 .applicant-right {
-    width: 21%;
+    width: 24%;
     right: 0;
     min-width: 100px;
     /* background-color: #e7e7e7; */

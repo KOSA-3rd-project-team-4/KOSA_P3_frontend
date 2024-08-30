@@ -1,9 +1,12 @@
 <template>
-    <div id="posts-background">
+<div>
+    <header-compo></header-compo>
+    <!-- <div id="posts-background"> -->
+    <div v-if="user" id="posts-background">
         <div id="posts-block">
             <div id="posts-header">
                 <div id="posts-header-content">
-                    <div id="post-header-title">{{ category }} 공고 리스트</div>
+                    <div id="post-header-title">{{ filtername }} 공고 리스트</div>
                     <div id="post-header-filter">
                         <div id="board-options">
                             <div id="board-options-content">
@@ -40,7 +43,6 @@
                 >
                     <div class="post-content-title">
                         <div class="post-content-title-thumbnail">
-                            <!-- {{ post.image_url }} -->
                             <img :src="post.image_url" alt="지원자 이미지" class="applicant-thumbnail">
                         </div>
                         <div v-if="post.favorate" class="favorate">T</div>
@@ -69,18 +71,51 @@
             </div>
         </div>
     </div>
+</div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import axios from 'axios'; // axios 가져오기
+import HeaderCompo from '../../KBC/layouts/HeaderCompo.vue';
 
 export default {
     name: 'JobList',
-    components: {},
+    components: {
+        HeaderCompo,
+    },
     computed: {
-        category() {
-            return this.$route.params.category;
-        },
+        ...mapGetters(['getUser']),
+        user() {
+            const userData = this.getUser;
+            console.log('User data from Vuex:', userData);
+            this.userInfo = userData;
+            
+            if (!userData) {
+                console.log('비로그인 상태');
+                return null;
+            }
+
+            if ('nick_name' in userData) {
+                // alert('구직자입니다.');
+                this.userRole = 1;
+            }
+            else if('bizname' in userData) {
+                // alert('사업자입니다.');
+                this.userRole = 2;
+            }
+            return userData;
+        }, 
+    },
+    async created() {
+      const loginType = this.$store.getters.getLoginType;
+
+      // 로그인 유형에 따라 필요한 경우에만 fetch 호출
+      if (loginType === 'oauth' && !this.$store.getters.isAuthenticated) {
+        await this.$store.dispatch('fetchMemberLogin');
+      } else if (loginType === 'normal' && !this.$store.getters.isAuthenticated) {
+        await this.$store.dispatch('fetchBizLogin');
+      }
     },
     methods: {
         toggleDropdown() {
@@ -89,6 +124,20 @@ export default {
         selectOption(option) {
             this.selectedOption = option;
             this.showDropdown = false;
+            this.sortData();
+        },
+        sortData() {
+            if (this.selectedOption === '최신순') {
+                this.init_listData.sort((a, b) => b.announcement_id - a.announcement_id);
+            } else if (this.selectedOption === '가격순') {
+                this.init_listData.sort((a, b) => b.salary - a.salary);
+            } else if (this.selectedOption === '거리순') {
+                this.init_listData.sort((a, b) => {
+                    // 거리순 정렬 로직 추가 (예: location_description에 대한 임의의 거리 값 사용)
+                    // 이 부분은 실제 거리 계산 로직에 따라 다르게 구현될 수 있음
+                    return a.location_description.localeCompare(b.location_description);
+                });
+            }
         },
         handleClick(announcement_id) {
             // alert(`Selected Announcement ID: ${announcement_id}`);
@@ -112,14 +161,18 @@ export default {
             showDropdown: false,
             selectedOption: '최신순',
             options: ['최신순', '가격순', '거리순'],
+            filtername: '20대',
+
+            userInfo: '',
+            userRole: 1, // 1이면 구직자, 2이면 사업자
         };
     },
     mounted() {
           // 컴포넌트가 마운트될 때 데이터베이스에서 데이터 가져오기
-          axios.get('http://localhost:8080/query/view/announcements/select/all')
+        axios.get('http://localhost:8080/query/view/announcements/select/all')
             .then(response => {
                 this.init_listData = response.data.map(item => ({
-                    announcement_id: 1,
+                    announcement_id: item.announcement_id || 1,
                     company_name: item.bizname || '삼성',
                     image_url: item.image_url || 'image_path_samsung',
                     is_favorate: true, // 이거 아직 추가 안했다..
@@ -129,9 +182,20 @@ export default {
                     salary: item.salary || 100000,
                 }));
                 console.log(this.init_listData);
+                this.sortData();
             })
             .catch(error => {
               console.error("There was an error fetching the data:", error);
+            });
+
+        axios.get('http://localhost:8080/query/filteringtags/select/' + this.$route.params.category)
+            .then(response => {
+                const data = response.data;
+                console.log(data.tag_name); // 필터 이름
+                this.filtername = data.tag_name;
+            })
+            .catch(error => {
+                console.error("There was an error fetching the data:", error);
             })
     },
 };
